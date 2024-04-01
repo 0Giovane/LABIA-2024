@@ -6,14 +6,12 @@ input wire left ;
 output reg avancar ;
 output reg girar ;
 reg A,B,An,Bn;
-reg [1:0] contador;
 
 always @(*)
 begin
 
 	if (reset) begin
 		An = 1'b0;
-		contador = 2'b00;
 	end else if (!head && left) begin
 		An = 1'b1;
 	end else begin
@@ -49,12 +47,10 @@ end
 
 always @(posedge clock)
 begin
-	contador <= contador +1;
-	if (contador == 2'b10) begin
-		A <= An;
-		B <= Bn;
-		contador <= 2'b00;
-	end
+
+	A <= An;
+	B <= Bn;
+
 end
 
 endmodule
