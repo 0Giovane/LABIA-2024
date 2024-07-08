@@ -1,56 +1,198 @@
-module robo
+module Robo
 
-#(
-    parameter integer WIDTH = 2,
-                      INICIO = 0,
-                      PROCURAR = 1,
-                      ROTACIONAR = 2,
-                      SEGUIR = 3,
-                      V = 1'b1,
-                      F = 1'b0,
-                      caso_0 = 0,
-                      caso_1 = 1,
-                      caso_2 = 2,
-                      caso_3 = 3,
-                      caso_4 = 4,
-                      caso_5 = 5,
-                      caso_6 = 6,
-                      caso_7 = 7,
-                      caso_8 = 8,
-                      caso_9 = 10,                      
-                      caso_10 = 12,                      
-                      caso_11 = 14                                                         
-)
+  #(
+     parameter integer WIDTH = 2, // Lista de parâmetros para os estados
+     Procurando_Muro = 0,
+     Rotacionando = 1,
+     Acompanhando_Muro = 2,
+     Standby = 3
+   )
 
-(
-    output reg Front,
-    output reg Turn,
-    output reg Remove,
-    input wire clock,
-    input wire reset,
-    input wire H,
-    input wire L,
-    input wire U,
-    input wire B
-);
+   (
+     input wire clock,
+     input wire reset,
+     input wire head,
+     input wire left,
+     input wire under,
+     input wire barrier,
+     output reg avancar,
+     output reg girar,
+     output reg remover
+   );
 
-reg [WIDTH-1:0] estado;
+  reg [WIDTH-1:0] Estado_Atual, Proximo_Estado;  // Registradores de estado
 
-always @(posedge clock)
-begin
-    case (estado) 
-        INICIO:
-            case ({H,L,U,B})
-                caso_0:
-                    Front <=0;
-                caso_1:
-            endcase
 
+
+  initial
+  begin
+    Proximo_Estado = Procurando_Muro;
+    Estado_Atual = Proximo_Estado;
+  end
+
+  always @(posedge clock, posedge reset)
+  begin
+    if (reset == 1'b1)
+    begin
+      Proximo_Estado <= Procurando_Muro;
+    end
+    else
+    begin
+      Estado_Atual <= Proximo_Estado;
+      casez(Estado_Atual)
+        Procurando_Muro:
+        begin
+          if ({head,left,under,barrier} == 4'b0100)
+          begin
+            Proximo_Estado <= Acompanhando_Muro;
+          end
+          else if ({head,left,under,barrier} == 4'b??1?)
+          begin
+            Proximo_Estado <= Standby;
+          end
+          else
+          begin
+            Proximo_Estado <= Procurando_Muro;
+          end
+        end
+        Rotacionando:
+        begin
+          if ({head,left,under,barrier} == 4'b0100)
+          begin
+            Proximo_Estado <= Acompanhando_Muro;
+          end
+          else if ({head,left,under,barrier} == 4'b??1?)
+          begin
+            Proximo_Estado <= Standby;
+          end
+          else
+          begin
+            Proximo_Estado <= Rotacionando;
+          end
+        end
+        Acompanhando_Muro:
+        begin
+          if ({head,left,under,barrier} == 4'b1000 || {head,left,under,barrier} == 4'b0000)
+          begin
+            Proximo_Estado <= Procurando_Muro;
+          end
+          else if ({head,left,under,barrier} == 4'b1100)
+          begin
+            Proximo_Estado <= Rotacionando;
+          end
+          else if ({head,left,under,barrier} == 4'b??1?)
+          begin
+            Proximo_Estado <= Standby;
+          end
+          else
+          begin
+            Proximo_Estado <= Acompanhando_Muro;
+          end
+        end
+        Standby:
+        begin
+          Proximo_Estado <= Standby;
+        end
+        default:
+        begin
+          Proximo_Estado <= Procurando_Muro;
+        end
+      endcase
+    end
+  end
+
+  always @(*)
+  begin
+    casez(Estado_Atual)
+      Procurando_Muro:
+      begin
+        if ({head,left,under,barrier} == 4'b0100)
+        begin
+          avancar = 1'b1;
+          girar = 1'b0;
+          remover = 1'b0;
+        end
+        else if ({head,left,under,barrier} == 4'b??1?)
+        begin
+          avancar = 1'b0;
+          girar = 1'b0;
+          remover = 1'b0;
+        end
+        else if ({head,left,under,barrier} == 4'b0000)
+        begin
+          avancar = 1'b1;
+          girar = 1'b0;
+          remover = 1'b0;
+        end
+        else if ({head,left,under,barrier} == 4'b??01)
+        begin
+          avancar = 1'b0;
+          girar = 1'b0;
+          remover = 1'b1;
+        end
+      end
+      Rotacionando:
+      begin
+        if ({head,left,under,barrier} == 4'b0100)
+        begin
+          avancar = 1'b1;
+          girar = 1'b0;
+          remover = 1'b0;
+        end
+        else if ({head,left,under,barrier} == 4'b??1?)
+        begin
+          avancar = 1'b0;
+          girar = 1'b0;
+          remover = 1'b0;
+        end
+        else if ({head,left,under,barrier} == 4'b??01)
+        begin
+          avancar = 1'b0;
+          girar = 1'b0;
+          remover = 1'b1;
+        end
+        else
+        begin
+          avancar = 1'b0;
+          girar = 1'b1;
+          remover = 1'b0;
+        end
+      end
+      Acompanhando_Muro:
+      begin
+        if ({head,left,under,barrier} == 4'b1000 || {head,left,under,barrier} == 4'b0000 ||
+            {head,left,under,barrier} == 4'b1100)
+        begin
+          avancar = 1'b0;
+          girar = 1'b1;
+          remover = 1'b0;
+        end
+        else if ({head,left,under,barrier} == 4'b??1?)
+        begin
+          avancar = 1'b0;
+          girar = 1'b0;
+          remover = 1'b0;
+        end
+        else if ({head,left,under,barrier} == 4'b??01)
+        begin
+          avancar = 1'b0;
+          girar = 1'b0;
+          remover = 1'b1;
+        end
+        else
+        begin
+          avancar = 1'b1;
+          girar = 1'b0;
+          remover = 1'b0;
+        end
+      end
+      default:
+      begin
+        avancar = 1'b0;
+        girar = 1'b0;
+        remover = 1'b0;
+      end
     endcase
-        
-   
-end
-
-
+  end
 
 endmodule
