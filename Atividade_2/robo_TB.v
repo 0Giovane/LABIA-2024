@@ -1,4 +1,3 @@
-`include "/workspaces/Verilog/src/lab_1/atv_1/robo_1.v"
 `timescale 1ns/1ns
 
 module Robo_TB;
@@ -17,12 +16,18 @@ module Robo_TB;
   reg [1:48] String_Orientacao_Robo;
   integer i;
 
-  robo_1 DUV (.clock(clock), .reset(reset), .head(head), .left(left),.under(under), .barrier(barrier), .avancar(avancar),
-              .girar(girar),.remover(remover));
+  Robo DUV (.clock(clock), .reset(reset), .head(head), .left(left),.under(under), .barrier(barrier), .avancar(avancar),
+            .girar(girar),.remover(remover));
 
   always
     #50 clock = !clock;
 
+  always @(Linha_Robo,Coluna_Robo,Orientacao_Robo)
+    Define_Sensores;
+
+  always @(head,left,under,barrier)
+	$display ("H = %b L = %b U=%b B=%b", head, left,under,barrier);
+  
   initial
   begin
     clock = 0;
@@ -47,9 +52,6 @@ module Robo_TB;
 
     for (i = 0; i < Qtd_Movimentos; i = i + 1)
     begin
-      @ (negedge clock);
-      Define_Sensores;
-      $display ("H = %b L = %b", head, left);
       @ (negedge clock);
       Atualiza_Posicao_Robo;
       case (Orientacao_Robo)

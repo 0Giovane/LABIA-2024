@@ -27,6 +27,7 @@ module Robo
     if (reset == 1'b1)
     begin
       Estado_Atual <= Iniciando;
+      Proximo_Estado <= Iniciando;
     end
     else
     begin
@@ -34,32 +35,31 @@ module Robo
     end
   end
 
-  always @(Estado_Atual,head,left,under,barrier)
+  always @(negedge clock)
   begin
     case(Estado_Atual)
       Procurando_Muro:
       begin
         casez({head,left,under,barrier})
-
           4'b0100:
           begin
-            Proximo_Estado = Acompanhando_Muro;
+            Proximo_Estado <= Acompanhando_Muro;
           end
           4'b??1?:
           begin
-            Proximo_Estado = Standby;
+            Proximo_Estado <= Standby;
           end
           4'b??01:
           begin
-            Proximo_Estado = Removendo;
+            Proximo_Estado <= Removendo;
           end
           4'b1?00:
           begin
-            Proximo_Estado = Rotacionando;
+            Proximo_Estado <= Rotacionando;
           end
           default:
           begin
-            Proximo_Estado = Procurando_Muro;
+            Proximo_Estado <= Procurando_Muro;
           end
         endcase
       end
@@ -68,19 +68,19 @@ module Robo
         casez({head,left,under,barrier})
           4'b0100:
           begin
-            Proximo_Estado = Acompanhando_Muro;
+            Proximo_Estado <= Acompanhando_Muro;
           end
           4'b??1?:
           begin
-            Proximo_Estado = Standby;
+            Proximo_Estado <= Standby;
           end
           4'b??01:
           begin
-            Proximo_Estado = Removendo;
+            Proximo_Estado <= Removendo;
           end
           default:
           begin
-            Proximo_Estado = Rotacionando;
+            Proximo_Estado <= Rotacionando;
           end
         endcase
       end
@@ -89,23 +89,23 @@ module Robo
         casez({head,left,under,barrier})
           4'b1000 , 4'b0000:
           begin
-            Proximo_Estado = Procurando_Muro;
+            Proximo_Estado <= Procurando_Muro;
           end
           4'b1100:
           begin
-            Proximo_Estado = Rotacionando;
+            Proximo_Estado <= Rotacionando;
           end
           4'b??1?:
           begin
-            Proximo_Estado = Standby;
+            Proximo_Estado <= Standby;
           end
           4'b??01:
           begin
-            Proximo_Estado = Removendo;
+            Proximo_Estado <= Removendo;
           end
           default:
           begin
-            Proximo_Estado = Acompanhando_Muro;
+            Proximo_Estado <= Acompanhando_Muro;
           end
         endcase
       end
@@ -114,47 +114,49 @@ module Robo
         casez({head,left,under,barrier})
           4'b1010 , 4'b1110:
           begin
-            Proximo_Estado = Iniciando;
+            Proximo_Estado <= Iniciando;
           end
           4'b01?0:
           begin
-            Proximo_Estado = Acompanhando_Muro;
+            Proximo_Estado <= Acompanhando_Muro;
           end
           4'b00?0:
           begin
-            Proximo_Estado = Procurando_Muro;
+            Proximo_Estado <= Procurando_Muro;
           end
           4'b1100:
           begin
-            Proximo_Estado = Rotacionando;
+            Proximo_Estado <= Rotacionando;
           end
           4'b1000:
           begin
-            Proximo_Estado = Procurando_Muro;
+            Proximo_Estado <= Procurando_Muro;
           end
           4'b???1:
           begin
-            Proximo_Estado = Removendo;
+            Proximo_Estado <= Removendo;
           end
         endcase
       end
       Standby:
       begin
-        Proximo_Estado = Standby;
+        Proximo_Estado <= Standby;
       end
       Removendo:
       begin
         casez ({head,left,under,barrier})
           4'b???1:
-            Proximo_Estado = Removendo ;
+            Proximo_Estado <= Removendo ;
           4'b?1?0:
-            Proximo_Estado = Acompanhando_Muro ;
+            Proximo_Estado <= Acompanhando_Muro ;
           4'b?0?0:
-            Proximo_Estado = Procurando_Muro ;
+            Proximo_Estado <= Procurando_Muro ;
         endcase
       end
     endcase
-
+end
+always @(Estado_Atual,head,left,under,barrier)
+begin
     case(Estado_Atual)
 
       Procurando_Muro:
@@ -292,5 +294,4 @@ module Robo
       end
     endcase
   end
-
 endmodule
