@@ -14,6 +14,7 @@ module Robo_TB;
   reg [1:2] Orientacao_Robo;
   reg [1:8] Qtd_Movimentos;
   reg [1:48] String_Orientacao_Robo;
+  reg [1:5] Linha_pos_inicial , Coluna_pos_inicial;
   integer i;
 
   Robo DUV (.clock(clock), .reset(reset), .head(head), .left(left),.under(under), .barrier(barrier), .avancar(avancar),
@@ -26,8 +27,8 @@ module Robo_TB;
     Define_Sensores;
 
   always @(head,left,under,barrier)
-	$display ("H = %b L = %b U=%b B=%b", head, left,under,barrier);
-  
+    $display ("H = %b L = %b U=%b B=%b", head, left,under,barrier);
+
   initial
   begin
     clock = 0;
@@ -36,6 +37,9 @@ module Robo_TB;
     left = 0;
     under = 0;
     barrier = 0;
+    Linha_pos_inicial = 10;
+    Coluna_pos_inicial = 1;
+
 
     $readmemb("Mapa.txt", Mapa);
     Linha_Mapa = Mapa[0];
@@ -88,6 +92,14 @@ module Robo_TB;
 
   task Define_Sensores;
     begin
+      if ( Linha_pos_inicial == Linha_Robo && Coluna_pos_inicial == Coluna_Robo )
+      begin
+        under = 1;
+      end
+      else
+      begin
+        under = 0;
+      end
       case (Orientacao_Robo)
         N:
         begin
@@ -111,7 +123,7 @@ module Robo_TB;
         S:
         begin
           // definicao de head
-          if (Linha_Robo == 20)
+          if (Linha_Robo == 10)
             head = 1;
           else
           begin
@@ -157,7 +169,7 @@ module Robo_TB;
             head = Linha_Mapa[Coluna_Robo - 1];
           end
           // definicao de left
-          if (Linha_Robo == 20)
+          if (Linha_Robo == 10)
             left = 1;
           else
           begin

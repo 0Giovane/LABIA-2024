@@ -112,15 +112,15 @@ module Robo
       Iniciando:
       begin
         casez({head,left,under,barrier})
-          4'b1010 , 4'b1110:
+          4'b??10:
           begin
             Proximo_Estado <= Iniciando;
           end
-          4'b01?0:
+          4'b0100:
           begin
             Proximo_Estado <= Acompanhando_Muro;
           end
-          4'b00?0:
+          4'b0000:
           begin
             Proximo_Estado <= Procurando_Muro;
           end
@@ -154,9 +154,9 @@ module Robo
         endcase
       end
     endcase
-end
-always @(Estado_Atual,head,left,under,barrier)
-begin
+  end
+  always @(Estado_Atual,head,left,under,barrier)
+  begin
     case(Estado_Atual)
 
       Procurando_Muro:
