@@ -7,7 +7,10 @@ module Robo_TB;
   reg clock, reset, head, left,under,barrier;
   wire avancar, girar,remover;
 
-  reg [1:20] Mapa [0:20]; // linha 0 reservada para posicao do robo e quantidade de movimentos
+  reg [1:20] Mapa [0:10]; // linha 0 reservada para posicao do robo e quantidade de movimentos
+  reg [1:2] Entulho [1:10][1:20];
+  reg [1:5] Linha_Entulho;
+  reg [1:2] Peso_Entulho;
   reg [1:20] Linha_Mapa;
   reg [1:5] Linha_Robo;
   reg [1:5] Coluna_Robo;
@@ -15,11 +18,16 @@ module Robo_TB;
   reg [1:8] Qtd_Movimentos;
   reg [1:48] String_Orientacao_Robo;
   reg [1:5] Linha_pos_inicial , Coluna_pos_inicial;
-  integer i;
+  reg [1:2] rdata;
+  reg [7:0]endereco;
+  reg w,r;
+  wire [2:1] data;
+
+  integer i,k,m;
 
   Robo DUV (.clock(clock), .reset(reset), .head(head), .left(left),.under(under), .barrier(barrier), .avancar(avancar),
             .girar(girar),.remover(remover));
-
+  memo tes(.data(data),.endereco(endereco),.r(r),.w(w));
   always
     #50 clock = !clock;
 
@@ -29,6 +37,7 @@ module Robo_TB;
   always @(head,left,under,barrier)
     $display ("H = %b L = %b U=%b B=%b", head, left,under,barrier);
 
+assign data = rdata;
   initial
   begin
     clock = 0;
@@ -39,8 +48,10 @@ module Robo_TB;
     barrier = 0;
     Linha_pos_inicial = 10;
     Coluna_pos_inicial = 1;
+    r=0;
+    w=1;
 
-
+    $readmemb("Entulho.txt",Entulho);
     $readmemb("Mapa.txt", Mapa);
     Linha_Mapa = Mapa[0];
     Linha_Robo = Linha_Mapa[1:5];
@@ -48,6 +59,18 @@ module Robo_TB;
     Orientacao_Robo = Linha_Mapa[11:12];
     Qtd_Movimentos = Linha_Mapa[13:20];
     $display ("Linha = %d Coluna = %d Orientacao = %s Movimentos = %d", Linha_Robo, Coluna_Robo, String_Orientacao_Robo, Qtd_Movimentos);
+
+    for (k=1; k < 11;k = k + 1)
+    begin
+      for (m = 1; m < 21 ; m = m + 1)
+      begin
+        rdata = Entulho[k][m][1:2];
+        endereco = 20*(k-1) + (m-1);
+      end
+    end
+
+    r=1;
+    w=0;
 
     if (Situacoes_Anomalas(1))
       $stop;
@@ -105,11 +128,28 @@ module Robo_TB;
         begin
           // definicao de head
           if (Linha_Robo == 1)
+          begin
             head = 1;
+            barrier = 0;
+          end
           else
           begin
             Linha_Mapa = Mapa[Linha_Robo - 1];
             head = Linha_Mapa[Coluna_Robo];
+            if (head == 0)
+            begin
+              Linha_Entulho = Entulho[Linha_Robo - 1][Coluna_Robo];
+              Peso_Entulho = Linha_Entulho[1:2];
+              if (Peso_Entulho > 0)
+              begin
+                barrier = 1;
+
+              end
+              else
+              begin
+                barrier = 0;
+              end
+            end
           end
           // definicao de left
           if (Coluna_Robo == 1)
@@ -124,11 +164,28 @@ module Robo_TB;
         begin
           // definicao de head
           if (Linha_Robo == 10)
+          begin
             head = 1;
+            barrier = 0;
+          end
           else
           begin
             Linha_Mapa = Mapa[Linha_Robo + 1];
             head = Linha_Mapa[Coluna_Robo];
+            if (head == 0)
+            begin
+              Linha_Entulho = Entulho[Linha_Robo + 1][Coluna_Robo];
+              Peso_Entulho = Linha_Entulho[1:2];
+              if (Peso_Entulho > 0)
+              begin
+                barrier = 1;
+
+              end
+              else
+              begin
+                barrier = 0;
+              end
+            end
           end
           // definicao de left
           if (Coluna_Robo == 20)
@@ -143,11 +200,27 @@ module Robo_TB;
         begin
           // definicao de head
           if (Coluna_Robo == 20)
+          begin
             head = 1;
+            barrier = 0;
+          end
           else
           begin
             Linha_Mapa = Mapa[Linha_Robo];
             head = Linha_Mapa[Coluna_Robo + 1];
+            if (head == 0)
+            begin
+              Linha_Entulho = Entulho[Linha_Robo][Coluna_Robo+1];
+              Peso_Entulho = Linha_Entulho[1:2];
+              if (Peso_Entulho> 0)
+              begin
+                barrier = 1;
+              end
+              else
+              begin
+                barrier = 0;
+              end
+            end
           end
           // definicao de left
           if (Linha_Robo == 1)
@@ -162,11 +235,27 @@ module Robo_TB;
         begin
           // definicao de head
           if (Coluna_Robo == 1)
+          begin
             head = 1;
+            barrier = 0;
+          end
           else
           begin
             Linha_Mapa = Mapa[Linha_Robo];
             head = Linha_Mapa[Coluna_Robo - 1];
+            if (head == 0)
+            begin
+              Linha_Entulho = Entulho[Linha_Robo][Coluna_Robo-1];
+              Peso_Entulho = Linha_Entulho[1:2];
+              if (Peso_Entulho> 0)
+              begin
+                barrier = 1;
+              end
+              else
+              begin
+                barrier = 0;
+              end
+            end
           end
           // definicao de left
           if (Linha_Robo == 10)

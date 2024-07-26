@@ -1,3 +1,5 @@
+`timescale 1ns/1ns
+
 module Robo
 
   (
@@ -11,7 +13,7 @@ module Robo
     output reg girar,
     output reg remover
   );
-  parameter WIDTH = 3, // Lista de parÃ¢metros para os estados
+  parameter WIDTH = 3, // Lista de parâmetros para os estados
             Procurando_Muro = 0,
             Rotacionando = 1,
             Acompanhando_Muro = 2,
@@ -295,3 +297,4 @@ module Robo
     endcase
   end
 endmodule
+
