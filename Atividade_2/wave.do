@@ -19,6 +19,7 @@ add wave -noupdate -radix unsigned /Robo_TB/Orientacao_Robo
 add wave -noupdate -divider Estados
 add wave -noupdate -radix unsigned /Robo_TB/DUV/Estado_Atual
 add wave -noupdate -radix unsigned /Robo_TB/DUV/Proximo_Estado
+add wave -noupdate -radix decimal /Robo_TB/Peso_Entulho
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {111 ns} 0}
 quietly wave cursor active 1
