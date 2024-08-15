@@ -1,4 +1,4 @@
-module robo
+module Robo
 
   (
     input wire clock,
@@ -11,7 +11,7 @@ module robo
     output reg girar,
     output reg remover
   );
-  parameter WIDTH = 3, // Lista de parâmetros para os estados
+  parameter WIDTH = 3, // Lista de parï¿½metros para os estados
             Procurando_Muro = 0,
             Rotacionando = 1,
             Acompanhando_Muro = 2,
@@ -20,7 +20,6 @@ module robo
             Standby = 5;
 
   reg [WIDTH-1:0] Estado_Atual, Proximo_Estado;  // Registradores de estado
-
 
   always @(posedge clock, posedge reset)
   begin

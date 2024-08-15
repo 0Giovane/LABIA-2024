@@ -1,6 +1,6 @@
 `timescale 1ns/1ns
 
-module top_tb;
+module Top_tb;
 
   reg clk;
   reg reset;

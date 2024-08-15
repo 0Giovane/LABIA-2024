@@ -1,4 +1,4 @@
-module memo (
+module Memo (
     input clock, 
     input reset,
     input avancar,
@@ -26,9 +26,9 @@ parameter NORTH = 2'b00,
 
 // Matrix dimensions: 10x20
 reg [2:0] map [0:9][0:19];  // 0-based indexing para 10x20
-reg [3:0] robo_row;    // Coluna da posição do robô (4 bits para 0-9)
-reg [4:0] robo_col;    // Coluna da posição do robô (5 bits para 0-19)
-reg [1:0] robo_orientacao;  // Orientação do robô
+reg [3:0] robo_row;    // Coluna da posiï¿½ï¿½o do robï¿½ (4 bits para 0-9)
+reg [4:0] robo_col;    // Coluna da posiï¿½ï¿½o do robï¿½ (5 bits para 0-19)
+reg [1:0] robo_orientacao;  // Orientaï¿½ï¿½o do robï¿½
 
 reg [1:0] barrier_counter; // Contador de clock para BARRIER
 
@@ -36,9 +36,9 @@ initial begin
     // Inicializa o mapa na matriz
     $readmemh("map.hex", map); // L? dados bin?rios de um arquivo
 
-    robo_row = 4'b1001; // Posição de linha inicial (9)
-    robo_col = 5'b00000; // Posição de coluna inicial (0)
-    robo_orientacao = NORTH; // Orientação inicial (North)
+    robo_row = 4'b1001; // Posiï¿½ï¿½o de linha inicial (9)
+    robo_col = 5'b00000; // Posiï¿½ï¿½o de coluna inicial (0)
+    robo_orientacao = NORTH; // Orientaï¿½ï¿½o inicial (North)
     barrier_counter = 4'b0000; // Contador de BARRIER zerado
 end
 
@@ -52,14 +52,14 @@ always @(posedge clock or posedge reset) begin
         barrier_counter <= 4'b0000;
     end 
     else begin
-        // Lógica para girar
+        // Lï¿½gica para girar
         if (girar) begin
             if (robo_orientacao == EAST) // Retorna para o NORTH
                 robo_orientacao <= NORTH; 
             else
                 robo_orientacao <= robo_orientacao + 2'b01; // Rotaciona no sentido anti-hor?rio
         end
-        // Lógica para avançar
+        // Lï¿½gica para avanï¿½ar
         else if (avancar) begin
             case (robo_orientacao)
                 NORTH:
@@ -72,11 +72,11 @@ always @(posedge clock or posedge reset) begin
                     robo_col <= robo_col + 1;
             endcase
         end
-        // Lógica para remover
+        // Lï¿½gica para remover
         else if (remover) begin
             barrier_counter <= barrier_counter + 1;
 
-            if (barrier_counter == 2'b10) begin // Conta até 2
+            if (barrier_counter == 2'b10) begin // Conta atï¿½ 2
                 case (robo_orientacao)
                     NORTH:
                         case(map[robo_row - 1][robo_col])

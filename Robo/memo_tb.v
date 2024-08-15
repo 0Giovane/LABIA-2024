@@ -1,6 +1,6 @@
 `timescale 1ns/1ns
 
-module memo_tb;
+module Memo_tb;
 
     // Testbench signals
     reg clk;
@@ -17,10 +17,10 @@ module memo_tb;
     wire [1:0] robo_orientacao;
 
     // Instantiate the memo module
-    memo uut (
+    Memo uut (
         .clock(clk),
         .reset(reset),
-	.avancar(avancar),
+	    .avancar(avancar),
         .girar(girar),
         .remover(remover),
         .head_out(head_out),

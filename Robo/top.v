@@ -2,7 +2,7 @@ module Top (input clk, input reset);
 
   wire head, left, under, barrier, avancar, girar, remover;
 
-  robo robo_inst(
+  Robo robo_inst(
     .clock(clk),
     .reset(reset),
     .head(head),
@@ -14,7 +14,7 @@ module Top (input clk, input reset);
     .remover(remover)
   );
 
-  memo memo_inst(
+  Memo memo_inst(
     .clock(clk),
     .reset(reset),
     .avancar(avancar),
