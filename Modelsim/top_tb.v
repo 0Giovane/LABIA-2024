@@ -25,6 +25,17 @@ module Top_tb;
   assign under = top_inst.under;
   assign barrier = top_inst.barrier;
 
+  // Função para converter valor de row e col no vetor unidimensional
+  function [7:0] get_map_index;
+      input [3:0] row; // 4 bits to index rows (0-9)
+      input [4:0] col; // 5 bits to index columns (0-19)
+      integer index;
+  begin
+      index = row * 20 + col; // Calcular o index no vetor unidimensional
+      get_map_index = index; // Return the calculated index
+  end
+  endfunction
+
   // Generate clock signal
   always begin
     #5 clk = ~clk; // Clock period of 10 time units
@@ -53,13 +64,14 @@ module Top_tb;
 
 // Task to print matrix values
     task print_map;
+        // $write("%h ", top_inst.memo_inst.map[get_map_index(9,0)]);
         integer i, j;
         begin
             $display("Map values:");
             for (i = 0; i < 10; i = i + 1) begin
                 $write("Row %0d: ", i);
                 for (j = 0; j < 20; j = j + 1) begin
-                    $write("%h ", top_inst.memo_inst.map[i][j]);
+                    $write("%h ", top_inst.memo_inst.map[get_map_index(i,j)]);
                 end
                 $display("");
             end

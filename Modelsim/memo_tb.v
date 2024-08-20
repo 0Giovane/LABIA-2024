@@ -33,6 +33,17 @@ module Memo_tb;
     assign robo_col = uut.robo_col;
     assign robo_orientacao = uut.robo_orientacao;
 
+    // Função para converter valor de row e col no vetor unidimensional
+    function [7:0] get_map_index;
+        input [3:0] row; // 4 bits to index rows (0-9)
+        input [4:0] col; // 5 bits to index columns (0-19)
+        reg [7:0] index;
+    begin
+        index = row * 8'd20 + col; // Calcular o index no vetor unidimensional
+        get_map_index = index; // Return the calculated index
+    end
+    endfunction
+
     // Clock generation
     initial begin
         clk = 0;
@@ -90,7 +101,7 @@ module Memo_tb;
             for (i = 0; i < 10; i = i + 1) begin
                 $write("Row %0d: ", i);
                 for (j = 0; j < 20; j = j + 1) begin
-                    $write("%h ", uut.map[i][j]);
+                    $write("%h ", uut.map[get_map_index(i,j)]);
                 end
                 $display("");
             end
