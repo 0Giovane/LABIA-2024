@@ -8,30 +8,35 @@ module Memo_tb;
     reg avancar;
     reg girar;
     reg remover;
+    reg manual_clock;
+    reg [11:0] gamepad_input;
+    wire flag_mode;
     wire head_out;
     wire left_out;
     wire under_out;
     wire barrier_out;
-    wire [3:0] robo_row;
-    wire [4:0] robo_col;
-    wire [1:0] robo_orientacao;
+    wire clock_out;  // Clock for the robot
 
-    // Instantiate the memo module
+    // Instantiate the Memo module
     Memo uut (
         .clock(clk),
         .reset(reset),
-	    .avancar(avancar),
+        .avancar(avancar),
         .girar(girar),
         .remover(remover),
+        .manual_clock(manual_clock),
+        .gamepad_input(gamepad_input),
         .head_out(head_out),
         .left_out(left_out),
         .under_out(under_out),
-        .barrier_out(barrier_out)
+        .barrier_out(barrier_out),
+        .clock_out(clock_out)
     );
 
     assign robo_row = uut.robo_row;
     assign robo_col = uut.robo_col;
     assign robo_orientacao = uut.robo_orientacao;
+    assign flag_mode = uut.flag_mode;
 
     // Função para converter valor de row e col no vetor unidimensional
     function [7:0] get_map_index;
@@ -48,12 +53,12 @@ module Memo_tb;
     initial begin
         clk = 0;
         forever #5 clk = ~clk;  // Clock period of 10 time units
-	forever begin
-	    $write("Row: %0d ", uut.robo_row);
-	    $write("Col: %0d ", uut.robo_col);
-	    $write("Orientacao: %0d ", uut.robo_orientacao);
-	    $display("");
-	end
+        forever begin
+            $write("Row: %0d ", uut.robo_row);
+            $write("Col: %0d ", uut.robo_col);
+            $write("Orientacao: %0d ", uut.robo_orientacao);
+            $display("");
+        end
     end
 
     // Testbench initialization and stimulus
@@ -63,34 +68,60 @@ module Memo_tb;
         avancar = 0;
         girar = 0;
         remover = 0;
+        manual_clock = 0;
+        gamepad_input = 12'h0;
 
-	// Print matrix values
+        // Print matrix values
         print_map();
 
         // Apply reset
         #10;
         reset = 1;
-
-        // Wait for a short while to let the module process
         #10;
-	
-	reset = 0;
-	avancar = 1;
+        reset = 0;
 
-	#10
-	
-	avancar = 0;
-	girar= 1;
+        // Simulate some inputs
+        avancar = 1;
+        manual_clock = 1;
+        #10;
+        avancar = 0;
+        manual_clock = 0;
 
-	#10
-	$write("Row: %0d ", uut.robo_row);
-	$write("Col: %0d ", uut.robo_col);
-	$write("Orientacao: %0d ", uut.robo_orientacao);
-	$display("");
+        girar = 1;
+        #10;
+        girar = 0;
 
-    // End the simulation
-    #100;
-    $finish;
+        // Gamepad interaction
+        gamepad_input = 12'b100000000000; // MODE pressionado
+        #10;
+        gamepad_input = 12'h0;
+        #20;
+
+        manual_clock = 1;
+        #15;
+        manual_clock = 0;
+        #15;
+        manual_clock = 1;
+        #10;
+        gamepad_input = 12'b100000000000;
+        #5;
+        gamepad_input = 12'h0;
+        manual_clock = 0;
+
+        #2;
+        manual_clock = 1;
+
+        #8;
+        manual_clock = 0;
+
+        #5;
+        reset=1;
+        #5;
+        reset=0;
+
+        // End the simulation
+        #100;
+        $finish;
     end
 
     // Task to print matrix values
@@ -109,4 +140,3 @@ module Memo_tb;
     endtask
 
 endmodule
-
