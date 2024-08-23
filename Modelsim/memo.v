@@ -49,7 +49,6 @@ initial begin
     robo_orientacao = NORTH; // Orienta��o inicial (North)
     barrier_counter = 2'b00; // Contador de BARRIER zerado
     flag_start = 0;
-    flag_mode = 0;
 end
 
  // Função para converter valor de row e col no vetor unidimensional
@@ -64,8 +63,9 @@ end
  endfunction
 
 // Lógica para FLAG start
-always @(posedge gamepad_input[10]) begin
-    flag_start <= !flag_start;  // Varia a Flag 
+always @(posedge gamepad_input[10] or posedge reset) begin
+    if (reset) flag_start <= 0;
+    else flag_start <= !flag_start;  // Varia a Flag 
 end
 
 // Lógica para FLAG mode
@@ -86,7 +86,6 @@ always @(posedge selected_clock or posedge reset) begin
         robo_col <= 5'b00000;
         robo_orientacao <= NORTH;
         barrier_counter <= 2'b00;
-        flag_start = 0;
     end 
     else if (flag_start) begin // Modo de edição
         //

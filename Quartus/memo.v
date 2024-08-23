@@ -4,10 +4,13 @@ module Memo (
     input avancar,
     input girar,
     input remover,
+    input manual_clock,
+    input [11:0] gamepad_input,  
     output reg head_out,
     output reg left_out,
     output reg under_out,
-    output reg barrier_out
+    output reg barrier_out,
+    output wire clock_out // Clock para o robô
 );
 
 // Par?metros para as celulas
@@ -32,6 +35,11 @@ reg [1:0] robo_orientacao;  // Orienta��o do rob�
 
 reg [1:0] barrier_counter; // Contador de clock para BARRIER
 
+reg flag_start; // Flag para ativação do START no gamepad
+reg flag_mode; // Flag para ativação do MODE no gamepad
+
+wire selected_clock; // Assume "manual_clock" ou "clock" dependendo da "flag_mode"
+
 initial begin
     // Inicializa o mapa na matriz
     $readmemh("map.hex", map); // L? dados bin?rios de um arquivo
@@ -40,21 +48,38 @@ initial begin
     robo_col = 5'b00000; // Posi��o de coluna inicial (0)
     robo_orientacao = NORTH; // Orienta��o inicial (North)
     barrier_counter = 2'b00; // Contador de BARRIER zerado
+    flag_start = 0;
 end
 
  // Função para converter valor de row e col no vetor unidimensional
  function [7:0] get_map_index;
-	  input [3:0] row; // 4 bits to index rows (0-9)
-	  input [4:0] col; // 5 bits to index columns (0-19)
+	  input [3:0] row; // 4 bits para linhas (0-9)
+	  input [4:0] col; // 5 bits para colunas (0-19)
 	  reg [7:0] index;
  begin
 	  index = row * 8'd20 + col; // Calcular o index no vetor unidimensional
-	  get_map_index = index; // Return the calculated index
+	  get_map_index = index; 
  end
  endfunction
 
-// L?gica da orienta??o	e movimenta??o
-always @(posedge clock or posedge reset) begin 
+// Lógica para FLAG start
+always @(posedge gamepad_input[10] or posedge reset) begin
+    if (reset) flag_start <= 0;
+    else flag_start <= !flag_start;  // Varia a Flag 
+end
+
+// Lógica para FLAG mode
+always @(posedge gamepad_input[11] or posedge reset) begin
+    if (reset) flag_mode <= 0;
+    else flag_mode <= !flag_mode;  // Varia a Flag 
+end
+
+// Logic to select the appropriate clock based on flag_mode
+assign selected_clock = (flag_mode) ? manual_clock : clock;
+assign clock_out = selected_clock; // Saída de clock para o robô
+
+// Lógica da orientação	e movimentação
+always @(posedge selected_clock or posedge reset) begin 
     if (reset) begin
         // Reset the robot's position and orientation
         robo_row <= 4'b1001;
@@ -62,15 +87,18 @@ always @(posedge clock or posedge reset) begin
         robo_orientacao <= NORTH;
         barrier_counter <= 2'b00;
     end 
+    else if (flag_start) begin // Modo de edição
+        //
+    end
     else begin
-        // L�gica para girar
+        // Lógica para girar
         if (girar) begin
             if (robo_orientacao == EAST) // Retorna para o NORTH
                 robo_orientacao <= NORTH; 
             else
                 robo_orientacao <= robo_orientacao + 2'b01; // Rotaciona no sentido anti-hor?rio
         end
-        // L�gica para avan�ar
+        // Lógica para avançar
         else if (avancar) begin
             case (robo_orientacao)
                 NORTH:
@@ -83,11 +111,11 @@ always @(posedge clock or posedge reset) begin
                     robo_col <= robo_col + 4'b0001;
             endcase
         end
-        // L�gica para remover
+        // Lógica para remover
         else if (remover) begin
             barrier_counter <= barrier_counter + 2'b01;
 
-            if (barrier_counter == 2'b10) begin // Conta at� 2
+            if (barrier_counter == 2'b10) begin // Conta até 2
                 case (robo_orientacao)
                     NORTH:
                         case(map[get_map_index(robo_row - 4'b0001,robo_col)])
@@ -259,5 +287,7 @@ always @(*) begin
 end
 
 endmodule
+
+
 
 

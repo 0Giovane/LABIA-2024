@@ -1,16 +1,16 @@
-C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v
-Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module Memo
-
-Top level modules:
-	Memo
-
-} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v
+C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
 -- Compiling module Robo
 
 Top level modules:
 	Robo
+
+} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Memo_tb
+
+Top level modules:
+	Memo_tb
 
 } {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
