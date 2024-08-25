@@ -1,4 +1,4 @@
-module top(
+module Top(
 	reset,
 	manual_clock,
 	clock,
@@ -19,7 +19,7 @@ wire	SYNTHESIZED_WIRE_5;
 wire	SYNTHESIZED_WIRE_6;
 wire	SYNTHESIZED_WIRE_7;
 
-Memo	b2v_inst(
+Memo	memo_inst(
 	.clock(clock),
 	.reset(reset),
 	.avancar(SYNTHESIZED_WIRE_0),
@@ -27,25 +27,24 @@ Memo	b2v_inst(
 	.remover(SYNTHESIZED_WIRE_2),
 	.manual_clock(manual_clock),
 	.gamepad_input(gamepad_input),
-	
 	.head_out(SYNTHESIZED_WIRE_4),
 	.left_out(SYNTHESIZED_WIRE_5),
 	.under_out(SYNTHESIZED_WIRE_6),
 	.barrier_out(SYNTHESIZED_WIRE_7),
 	.clock_out(SYNTHESIZED_WIRE_3));
-	defparam	b2v_inst.BARRIER3 = 3'b010;
-	defparam	b2v_inst.BARRIER6 = 3'b011;
-	defparam	b2v_inst.BARRIER9 = 3'b100;
-	defparam	b2v_inst.BLACK = 3'b111;
-	defparam	b2v_inst.EAST = 2'b11;
-	defparam	b2v_inst.NORTH = 2'b00;
-	defparam	b2v_inst.PATH = 3'b001;
-	defparam	b2v_inst.SOUTH = 2'b10;
-	defparam	b2v_inst.WALL = 3'b000;
-	defparam	b2v_inst.WEST = 2'b01;
+	defparam	memo_inst.BARRIER3 = 3'b010;
+	defparam	memo_inst.BARRIER6 = 3'b011;
+	defparam	memo_inst.BARRIER9 = 3'b100;
+	defparam	memo_inst.BLACK = 3'b111;
+	defparam	memo_inst.EAST = 2'b11;
+	defparam	memo_inst.NORTH = 2'b00;
+	defparam	memo_inst.PATH = 3'b001;
+	defparam	memo_inst.SOUTH = 2'b10;
+	defparam	memo_inst.WALL = 3'b000;
+	defparam	memo_inst.WEST = 2'b01;
 
 
-Robo	b2v_inst2(
+Robo robo_inst(
 	.clock(SYNTHESIZED_WIRE_3),
 	.reset(reset),
 	.head(SYNTHESIZED_WIRE_4),
@@ -55,13 +54,12 @@ Robo	b2v_inst2(
 	.avancar(SYNTHESIZED_WIRE_0),
 	.girar(SYNTHESIZED_WIRE_1),
 	.remover(SYNTHESIZED_WIRE_2));
-	defparam	b2v_inst2.Acompanhando_Muro = 2;
-	defparam	b2v_inst2.Iniciando = 3;
-	defparam	b2v_inst2.Procurando_Muro = 0;
-	defparam	b2v_inst2.Removendo = 4;
-	defparam	b2v_inst2.Rotacionando = 1;
-	defparam	b2v_inst2.Standby = 5;
-	defparam	b2v_inst2.WIDTH = 3;
-
+	defparam	robo_inst.Acompanhando_Muro = 2;
+	defparam	robo_inst.Iniciando = 3;
+	defparam	robo_inst.Procurando_Muro = 0;
+	defparam	robo_inst.Removendo = 4;
+	defparam	robo_inst.Rotacionando = 1;
+	defparam	robo_inst.Standby = 5;
+	defparam	robo_inst.WIDTH = 3;
 
 endmodule

@@ -33,21 +33,14 @@ module Memo_tb;
         .clock_out(clock_out)
     );
 
+    reg [1:0] robo_orientacao;
+    reg [3:0] robo_row;    // Coluna da posição do robô (4 bits para 0-9)
+    reg [4:0] robo_col;    // Coluna da posição do robô (5 bits para 0-19)
+
     assign robo_row = uut.robo_row;
     assign robo_col = uut.robo_col;
     assign robo_orientacao = uut.robo_orientacao;
     assign flag_mode = uut.flag_mode;
-
-    // Função para converter valor de row e col no vetor unidimensional
-    function [7:0] get_map_index;
-        input [3:0] row; // 4 bits to index rows (0-9)
-        input [4:0] col; // 5 bits to index columns (0-19)
-        reg [7:0] index;
-    begin
-        index = row * 8'd20 + col; // Calcular o index no vetor unidimensional
-        get_map_index = index; // Return the calculated index
-    end
-    endfunction
 
     // Clock generation
     initial begin
@@ -71,25 +64,33 @@ module Memo_tb;
         manual_clock = 0;
         gamepad_input = 12'h0;
 
-        // Print matrix values
-        print_map();
-
         // Apply reset
         #10;
         reset = 1;
         #10;
         reset = 0;
 
+        // Print matrix values
+        print_map();
+
         // Simulate some inputs
         avancar = 1;
         manual_clock = 1;
         #10;
-        avancar = 0;
+        // avancar = 0;
         manual_clock = 0;
-
-        girar = 1;
-        #10;
-        girar = 0;
+        // girar = 0;
+        avancar = 0;
+        remover = 1;
+        $write("%b ", uut.fileira_mapa[7][59:57]);
+        #30
+        uut.fileira_mapa[7][59:57] = 3'b001;
+        $write("%b ", uut.fileira_mapa[7][59:57]);
+        #30
+        $write("%b ", uut.fileira_mapa[7][59:57]);
+        #30
+        $write("%b ", uut.fileira_mapa[7][59:57]);
+        avancar = 1;
 
         // Gamepad interaction
         gamepad_input = 12'b100000000000; // MODE pressionado
@@ -131,10 +132,8 @@ module Memo_tb;
             $display("Map values:");
             for (i = 0; i < 10; i = i + 1) begin
                 $write("Row %0d: ", i);
-                for (j = 0; j < 20; j = j + 1) begin
-                    $write("%h ", uut.map[get_map_index(i,j)]);
-                end
-                $display("");
+                $write("%b ", uut.fileira_mapa[i]);
+                $display("");    
             end
         end
     endtask
