@@ -5,7 +5,7 @@ module Memo (
     input girar,
     input remover,
     input manual_clock,
-    input [11:0] gamepad_input,  
+    input [11:0] gamepad_input,
     output reg head_out,
     output reg left_out,
     output reg under_out,
@@ -13,7 +13,7 @@ module Memo (
     output wire clock_out // Clock para o robô
 );
 
-// Par?metros para as celulas
+// Parâmetros para as celulas
 parameter WALL = 3'h0,
             PATH = 3'h1,
             BARRIER3 = 3'h2,
@@ -21,11 +21,11 @@ parameter WALL = 3'h0,
             BARRIER9 = 3'h4,
             BLACK = 3'h7;
 
-// Par?metros para a orienta??o do rob?
+// Par?metros para a orientação do robô
 parameter NORTH = 2'b00, 
-          WEST = 2'b01, 
-          SOUTH  = 2'b10, 
-          EAST  = 2'b11;
+            WEST = 2'b01, 
+            SOUTH  = 2'b10, 
+            EAST  = 2'b11;
 
 reg [59:0] fileira_mapa [0:9]; // Matriz 10x20 x 3 bits
 reg [3:0] robo_row;    // Coluna da posição do robô (4 bits para 0-9)
@@ -34,19 +34,12 @@ reg [1:0] robo_orientacao;  // Orientação do robô
 
 reg [1:0] barrier_counter; // Contador de clock para BARRIER
 
-reg flag_start; // Flag para ativação do START no gamepad
 reg flag_mode; // Flag para ativação do MODE no gamepad
 
 wire selected_clock; // Assume "manual_clock" ou "clock" dependendo da "flag_mode"
 
 integer row, col;
 reg [2:0] current_barrier;
-
-// Lógica para FLAG start
-always @(posedge gamepad_input[10] or posedge reset) begin
-    if (reset) flag_start <= 0;
-    else flag_start <= !flag_start;  // Varia a Flag 
-end
 
 // Lógica para FLAG mode
 always @(posedge gamepad_input[11] or posedge reset) begin
@@ -55,7 +48,7 @@ always @(posedge gamepad_input[11] or posedge reset) begin
 end
 
 // Lógica para selecionar o clock com base no flag_mode
-assign selected_clock = (flag_mode) ? manual_clock : clock;
+assign selected_clock = (!flag_mode) ? manual_clock : clock;
 assign clock_out = selected_clock; // Saída de clock para o robô
 
 // Função para buscar valor da célula no mapa
@@ -99,9 +92,6 @@ always @(posedge selected_clock or posedge reset) begin
         fileira_mapa[8] <= 60'b001_001_001_001_001_011_001_100_001_001_001_001_001_001_001_001_001_001_001_001;
         fileira_mapa[9] <= 60'b111_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000;
     end 
-    else if (flag_start) begin // Modo de edição
-        // TODO: Add mode of edition logic here.
-    end
     else begin
         // Lógica para girar
         if (girar) begin

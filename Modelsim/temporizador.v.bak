@@ -1,25 +1,27 @@
-module TemporizadorEntradas (Clock50, Reset, Entradas, v_sync, ColunasSprites, LinhasSprites, LEDG);
+module TemporizadorEntradas (
+  input Clock50, Reset, v_sync;
 
-input Clock50, Reset, v_sync;
-input [11:0] Entradas;
-output reg [23:0] ColunasSprites;
-output reg [17:0] LinhasSprites;
-output reg [7:0] LEDG;
+  input [11:0] Entradas;
+  output reg [23:0] ColunasSprites;
+  output reg [17:0] LinhasSprites;
+  output reg [7:0] LEDG;
+
+  output reg [4:0] ColunaCelulaPreta;
+  output reg [4:0] ColunaLixo1;
+  output reg [4:0] ColunaLixo2;
+  output reg [4:0] ColunaLixo3;
+  output reg [4:0] ColunaCursor;
+
+  output reg [3:0] LinhaCelulaPreta;
+  output reg [3:0] LinhaLixo1;
+  output reg [3:0] LinhaLixo2;
+  output reg [3:0] LinhaLixo3;
+  output reg [3:0] LinhaCursor;
+);
 
 // Posicao de Sprites
-reg [3:0] ColunaCelulaPreta;
-reg [3:0] ColunaLixo1;
-reg [3:0] ColunaLixo2;
-reg [3:0] ColunaLixo3;
-reg [3:0] ColunaRobo;
-reg [3:0] ColunaCursor;
-
-reg [2:0] LinhaCelulaPreta;
-reg [2:0] LinhaLixo1;
-reg [2:0] LinhaLixo2;
-reg [2:0] LinhaLixo3;
-reg [2:0] LinhaRobo;
-reg [2:0] LinhaCursor;
+reg [4:0] ColunaRobo;
+reg [3:0] LinhaRobo;
 
 reg [5:0] ContadorFrames;
 reg HabilitaNovaLeitura;
