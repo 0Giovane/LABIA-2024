@@ -9,146 +9,194 @@ z2
 !i10f 100
 cModel Technology
 dC:/intelFPGA/20.1
-vMemo
-!s110 1724451095
+vMap
+Z0 !s110 1724805471
 !i10b 1
-!s100 ERa6KXA9W`h1TWd0kVO5V1
-Z0 !s11b Dg1SIo80bB@j0V0VzS_@n1
-I@FJ3IYMBQSh:JYO_Lcj^S0
-Z1 VDg1SIo80bB@j0V0VzS_@n1
-Z2 dC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim
-w1724450993
-8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v
-FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v
-!i122 64
-L0 1 289
-Z3 OV;L;2020.1;71
+!s100 ^@Q@U290C9hj0e02cTM@J1
+Z1 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IfNbbYfe@R>ZaYGOZCO`Dj3
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+Z3 dC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim
+w1724805444
+8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/map.v
+FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/map.v
+!i122 231
+L0 1 403
+Z4 OV;L;2020.1;71
 r1
 !s85 0
 31
-!s108 1724451095.000000
+Z5 !s108 1724805471.000000
+!s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/map.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/map.v|
+!i113 1
+Z6 o-work work
+Z7 tCvgOpt 0
+n@map
+vMemo
+Z8 !s110 1724713618
+!i10b 1
+!s100 FT1b6O<3bOWPCL`Eo>i[X2
+R1
+IDVmVXE1nZJFoz;V@YPNgJ1
+R2
+R3
+w1724634288
+8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v
+FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v
+!i122 204
+L0 1 277
+R4
+r1
+!s85 0
+31
+Z9 !s108 1724713618.000000
 !s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v|
 !s90 -reportprogress|300|-work|LAB_robot|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v|
 !i113 1
-Z4 o-work LAB_robot
-Z5 tCvgOpt 0
+Z10 o-work LAB_robot
+R7
 n@memo
 vMemo_tb
-!s110 1724450236
+R8
 !i10b 1
-!s100 ]<mD]Gba8eIf4m5J4z=SG0
-R0
-I?6c1>2nB>;RM0<C1a`PoP0
+!s100 [bG2KBc7i^4g]:8PBbKmK2
 R1
+IlCNLWWKOfe>@@e2XKVAEQ2
 R2
-w1724449555
+R3
+w1724536125
 8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v
 FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v
-!i122 63
-L0 3 140
-R3
-r1
-!s85 0
-31
-!s108 1724450236.000000
-!s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v|
-!s90 -reportprogress|300|-work|LAB_robot|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v|
-!i113 1
+!i122 205
+L0 3 139
 R4
-R5
-n@memo_tb
-vRobo
-Z6 !s110 1724449488
-!i10b 1
-!s100 1Ka_;nUG9NAVZGO41RW]z1
-R0
-I2KCbK`9<8^Khfj0ja:C@_1
-R1
-R2
-w1723925762
-8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v
-FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v
-!i122 60
-L0 1 215
-R3
-r1
-!s85 0
-31
-!s108 1724449487.000000
-!s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v|
-!s90 -reportprogress|300|-work|LAB_robot|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v|
-!i113 1
-R4
-R5
-n@robo
-vtop
-R6
-!i10b 1
-!s100 ITPJ8D@85g[N7f>g>XBg70
-R0
-IoTzYL`hFjFILkHUa=H:X?2
-R1
-R2
-w1724446966
-Z7 8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v
-Z8 FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v
-!i122 61
-L0 1 67
-R3
-r1
-!s85 0
-31
-Z9 !s108 1724449488.000000
-Z10 !s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v|
-Z11 !s90 -reportprogress|300|-work|LAB_robot|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v|
-!i113 1
-R4
-R5
-vTop
-!s110 1723925771
-!i10b 1
-!s100 Uld1AL<1QEFhg@LJH_FMl2
-R0
-I4RLdQWfoz5ak_]=ma8A?n1
-R1
-R2
-w1723916877
-R7
-R8
-!i122 8
-L0 1 29
-R3
-r1
-!s85 0
-31
-!s108 1723925771.000000
-R10
-R11
-!i113 1
-R4
-R5
-n@top
-vTop_tb
-R6
-!i10b 1
-!s100 :=Tc16X@?9]=_lJ9mB7n52
-R0
-I8z5POO>_AHg<ghi^j2Dej2
-R1
-R2
-w1724111743
-8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top_tb.v
-FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top_tb.v
-!i122 62
-L0 3 79
-R3
 r1
 !s85 0
 31
 R9
+!s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v|
+!s90 -reportprogress|300|-work|LAB_robot|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v|
+!i113 1
+R10
+R7
+n@memo_tb
+vRobo
+R8
+!i10b 1
+!s100 1Ka_;nUG9NAVZGO41RW]z1
+R1
+I2KCbK`9<8^Khfj0ja:C@_1
+R2
+R3
+w1723925762
+8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v
+FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v
+!i122 206
+L0 1 215
+R4
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v|
+!s90 -reportprogress|300|-work|LAB_robot|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v|
+!i113 1
+R10
+R7
+n@robo
+vTemporizadorEntradas
+!s110 1724627459
+!i10b 1
+!s100 i;X5HaGN8Y>FDHe@XozXa2
+R1
+I]9NMcQ7oM:PjlSZWeiV@X1
+R2
+R3
+w1724627448
+8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/temporizador.v
+FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/temporizador.v
+!i122 142
+L0 1 176
+R4
+r1
+!s85 0
+31
+!s108 1724627459.000000
+!s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/temporizador.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/temporizador.v|
+!i113 1
+R6
+R7
+n@temporizador@entradas
+vtop
+!s110 1724601471
+!i10b 1
+!s100 eS6h^UKjcBcMM5iZ2hH8`1
+R1
+IL3_VhbIj3?Z1T1hOB@<7l1
+R2
+R3
+w1724600902
+Z11 8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v
+Z12 FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v
+!i122 118
+L0 1 66
+R4
+r1
+!s85 0
+31
+!s108 1724601471.000000
+Z13 !s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v|
+Z14 !s90 -reportprogress|300|-work|LAB_robot|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v|
+!i113 1
+R10
+R7
+vTop
+!s110 1724803285
+!i10b 1
+!s100 ]a8[dkj4:_@1LmimXiVOX1
+R1
+ICBgU@8iTJ1A5Rn6SM34VO0
+R2
+R3
+w1724803275
+R11
+R12
+!i122 214
+L0 1 78
+R4
+r1
+!s85 0
+31
+!s108 1724803285.000000
+R13
+R14
+!i113 1
+R10
+R7
+n@top
+vTop_tb
+R0
+!i10b 1
+!s100 2I4ZVk4l;DUz6c=`W21GB1
+R1
+If[3f1hN5K2amc4EIEIAG82
+R2
+R3
+w1724805215
+8C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top_tb.v
+FC:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top_tb.v
+!i122 230
+L0 3 156
+R4
+r1
+!s85 0
+31
+R5
 !s107 C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top_tb.v|
 !s90 -reportprogress|300|-work|LAB_robot|-stats=none|C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top_tb.v|
 !i113 1
-R4
-R5
+R10
+R7
 n@top_tb
