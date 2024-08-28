@@ -15,8 +15,8 @@ input wire	clock;
 input wire [11:0] gamepad_input;
 input wire v_sync;
 
-output wire [17:0] LinhasSprites;
-output wire [23:0] ColunasSprites;
+output wire [23:0] LinhasSprites;
+output wire [29:0] ColunasSprites;
 output wire [8:0] LEDG;
 
 wire	SYNTHESIZED_WIRE_0;

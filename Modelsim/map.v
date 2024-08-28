@@ -11,8 +11,8 @@ output reg [23:0] LinhasSprites; // 6 * 4 bits
 output reg [8:0] LEDG;
 
 // ------ Registradores internos ------
-reg [59:0] fileira_mapa [0:9]; // Matriz 10x20 x 3 bits
-reg [1:0] barrier_counter; // Contador de clock para BARRIER
+reg [59:0] FileiraMapa [0:9]; // Matriz 10x20 x 3 bits
+reg [3:0] barrier_counter; // Contador de clock para BARRIER
 integer row, col;
 reg [2:0] current_barrier;
 
@@ -39,12 +39,13 @@ reg [3:0] LinhaCursor;
 reg [5:0] ContadorFrames;
 reg HabilitaNovaLeitura;
 
-// Parâmetros para as celulas
+// Parâmetros para o mapa
 parameter WALL = 3'h0,
             PATH = 3'h1,
             LIXO1 = 3'h2,
             LIXO2 = 3'h3,
             LIXO3 = 3'h4,
+						NULL = 3'h5,
             BLACK = 3'h7;
 
 // Par?metros para a orientação do robô
@@ -72,18 +73,19 @@ function [2:0] get_map_value(input [3:0] row, input [4:0] col);
     integer start_bit;
 begin
     start_bit = 60'd59 - (col * 3);
-    get_map_value = fileira_mapa[row][start_bit -: 3];
+    get_map_value = FileiraMapa[row][start_bit -: 3];
 end
 endfunction
 
-// Função para setar valor da célula no mapa
-task set_column_bits(input [3:0] row, input [4:0] column, input [2:0] value);
-    integer start_bit;
+// Função para buscar tipo de lixo na posição
+function [3:0] get_lixo_type(input [3:0] row, input [4:0] col);
 begin
-    start_bit = 60'd59 - (col * 3);
-    fileira_mapa[row][start_bit -: 3] = value;
+		if (LinhaLixo1 == row && ColunaLixo1 == col) get_lixo_type = LIXO1;
+		else if (LinhaLixo2 == row && ColunaLixo2 == col) get_lixo_type = LIXO2;
+		else if (LinhaLixo3 == row && ColunaLixo3 == col) get_lixo_type = LIXO3;
+		else get_lixo_type = NULL;
 end
-endtask
+endfunction
 
 // Lógica para selecionar o clock com base no flag_mode
 assign selected_clock = (!flag_mode) ? manual_clock : Clock50;
@@ -115,44 +117,51 @@ always @(posedge ClockRobo) begin
 
 	// Lógica para remover
 	else if (remover) begin
-			barrier_counter <= barrier_counter + 2'b01;
+			barrier_counter <= barrier_counter + 4'b01;
 
-			if (barrier_counter == 2'b10) begin // Conta até 2
-					case (OrientacaoRobo)
-							NORTH: begin
-									row = LinhaRobo - 4'b0001;
-									col = ColunaRobo;
-							end
-							WEST: begin
-									row = LinhaRobo;
-									col = ColunaRobo - 4'b0001;
-							end
-							SOUTH: begin
-									row = LinhaRobo + 4'b0001;
-									col = ColunaRobo;
-							end
-							EAST: begin
-									row = LinhaRobo;
-									col = ColunaRobo + 4'b0001;
-							end
-					endcase
+			case (OrientacaoRobo)
+					NORTH: begin
+							row = LinhaRobo - 4'b0001;
+							col = ColunaRobo;
+					end
+					WEST: begin
+							row = LinhaRobo;
+							col = ColunaRobo - 4'b0001;
+					end
+					SOUTH: begin
+							row = LinhaRobo + 4'b0001;
+							col = ColunaRobo;
+					end
+					EAST: begin
+							row = LinhaRobo;
+							col = ColunaRobo + 4'b0001;
+					end
+			endcase
 
-					current_barrier = get_map_value(row, col);
+			// Obtém o tipo de barreira baseado na posição
+			current_barrier = get_lixo_type(row, col);
 
-					// Realiza o downgrade da barreira
-					case (current_barrier)
-							LIXO3: 
-									set_column_bits(row, col, LIXO2);
-							LIXO2: 
-									set_column_bits(row, col, LIXO1);
-							LIXO1: 
-							begin
-									set_column_bits(row, col, PATH);
+			// Realiza o processo de remoção baseado no tipo de barreira
+			case (current_barrier)
+					LIXO3: 
+							if (barrier_counter == 4'h8) begin // 9 clock cycles
+									LinhaLixo3 <= 4'b1111; // Fora do mapa
+									barrier_counter <= 4'h0; // Reseta o contador
 									barrier_out <= 0;
 							end
-					endcase
-					barrier_counter <= 2'b00; // Reseta o contador
-			end
+					LIXO2: 
+							if (barrier_counter == 4'h5) begin // 6 clock cycles
+									LinhaLixo2 <= 4'b1111; // Fora do mapa
+									barrier_counter <= 4'h0; // Reseta o contador
+									barrier_out <= 0;
+							end
+					LIXO1: 
+							if (barrier_counter == 4'h2) begin // 3 clock cycles
+									LinhaLixo1 <= 4'b1111; // Fora do mapa
+									barrier_counter <= 4'h0; // Reseta o contador
+									barrier_out <= 0;
+							end
+			endcase
 	end
 end
 
@@ -162,15 +171,15 @@ always @(posedge Clock50 or posedge Reset) begin
 
 		ColunaCelulaPreta <= 0;
 		ColunaLixo1 <= 2;
-		ColunaLixo2 <= 5;
-		ColunaLixo3 <= 7;
+		ColunaLixo2 <= 3;
+		ColunaLixo3 <= 4;
 		ColunaRobo <= 0;
 		ColunaCursor <= 0;
 		
 		LinhaCelulaPreta <= 9;		
 		LinhaLixo1 <= 6;		
-		LinhaLixo2 <= 8;		
-		LinhaLixo3 <= 8;		
+		LinhaLixo2 <= 6;		
+		LinhaLixo3 <= 6;		
 		LinhaRobo <= 9;		
 		LinhaCursor <= 9;
 		
@@ -181,16 +190,16 @@ always @(posedge Clock50 or posedge Reset) begin
 		barrier_out <= 0;
 
 		// Inicialização da matriz no reset
-		fileira_mapa[0] <= 60'b000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000;
-		fileira_mapa[1] <= 60'b000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000;
-		fileira_mapa[2] <= 60'b000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000;
-		fileira_mapa[3] <= 60'b000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000;
-		fileira_mapa[4] <= 60'b000_000_001_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000;
-		fileira_mapa[5] <= 60'b000_000_001_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000;
-		fileira_mapa[6] <= 60'b000_000_010_000_000_000_000_001_000_000_000_000_000_000_000_000_000_000_000_000;
-		fileira_mapa[7] <= 60'b000_000_001_000_000_000_000_001_000_000_000_000_000_000_000_000_000_000_000_000;
-		fileira_mapa[8] <= 60'b001_001_001_001_001_011_001_100_001_001_001_001_001_001_001_001_001_001_001_001;
-		fileira_mapa[9] <= 60'b111_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000;
+		FileiraMapa[0] <= 60'b000_000_000_000_000_000_000_000_000_001_001_001_001_001_001_000_000_000_000_000;
+		FileiraMapa[1] <= 60'b000_000_000_000_000_000_000_000_000_001_000_000_000_000_001_000_000_000_000_000;
+		FileiraMapa[2] <= 60'b000_000_000_000_000_001_000_000_000_001_000_000_000_000_001_001_001_001_001_001;
+		FileiraMapa[3] <= 60'b000_000_000_000_000_001_001_001_001_001_000_000_000_000_000_000_000_000_000_000;
+		FileiraMapa[4] <= 60'b000_000_000_000_000_001_000_000_000_001_000_000_000_000_000_000_001_001_001_001;
+		FileiraMapa[5] <= 60'b000_000_000_000_000_001_000_000_000_001_000_000_000_001_001_001_001_000_000_000;
+		FileiraMapa[6] <= 60'b001_001_001_001_001_001_000_000_000_001_001_001_001_001_000_000_000_000_000_000;
+		FileiraMapa[7] <= 60'b001_000_000_000_000_001_001_001_000_000_000_000_000_001_000_001_001_001_001_001;
+		FileiraMapa[8] <= 60'b001_000_000_000_000_000_000_001_000_000_000_000_000_001_000_000_000_001_000_000;
+		FileiraMapa[9] <= 60'b111_000_000_000_000_001_001_001_001_001_001_001_000_001_001_001_001_001_000_000;
 	end
 
 	if (HabilitaNovaLeitura && Flag) begin
@@ -218,29 +227,21 @@ always @(posedge Clock50 or posedge Reset) begin
 		if (Entradas[9]) begin
 			ColunaLixo3 <= ColunaCursor;
 			LinhaLixo3 <= LinhaCursor;
-
-			set_column_bits(LinhaLixo3, ColunaLixo3, LIXO3);
 		end
 
 		if (Entradas[8]) begin
 			ColunaLixo2 <= ColunaCursor;
 			LinhaLixo2 <= LinhaCursor;
-
-			set_column_bits(LinhaLixo2, ColunaLixo2, LIXO2);
 		end
 		
 		if (Entradas[7]) begin
 			ColunaLixo1 <= ColunaCursor;
 			LinhaLixo1 <= LinhaCursor;
-
-			set_column_bits(LinhaLixo1, ColunaLixo1, LIXO1);
 		end
 
 		if (Entradas[5]) begin
 			ColunaCelulaPreta <= ColunaCursor;
 			LinhaCelulaPreta <= LinhaCursor;
-
-			set_column_bits(LinhaCelulaPreta, ColunaCelulaPreta, BLACK);
 		end
 
 		if (Entradas[4]) begin
@@ -270,8 +271,8 @@ always @(posedge Clock50 or posedge Reset) begin
 		end
 		
 		if (Entradas[3]) begin
-			if (ColunaCursor == 10)
-				ColunaCursor <= 1;
+			if (ColunaCursor == 19)
+				ColunaCursor <= 0;
 			else
 				ColunaCursor <= ColunaCursor + 1;
 		end		
@@ -297,31 +298,31 @@ end
 
 // Logica combinacional das saidas
 always @(*) begin
+		// Lógica do under_out
+		if (LinhaCelulaPreta == LinhaRobo && ColunaCelulaPreta == ColunaRobo)
+				under_out = 1;
+		else
+				under_out = 0;
+
     case (OrientacaoRobo)
         NORTH: begin
             // Lógica do head_out
-            if (LinhaRobo == 0 || get_map_value(LinhaRobo - 4'b0001, ColunaRobo) == WALL) 
+            if (LinhaRobo == 0 || get_map_value(LinhaRobo - 4'h1, ColunaRobo) == WALL) 
                 head_out = 1;
             else 
                 head_out = 0;
 
             // Lógica do left_out
-            if (ColunaRobo == 0 || get_map_value(LinhaRobo,ColunaRobo - 4'b0001) == WALL) 
+            if (ColunaRobo == 0 || get_map_value(LinhaRobo,ColunaRobo - 5'h1) == WALL) 
                 left_out = 1;
             else 
                 left_out = 0;
 
-            // Lógica do under_out
-            if (get_map_value(LinhaRobo,ColunaRobo) == BLACK)
-                under_out = 1;
-            else
-                under_out = 0;
-
             // Lógica para setar o barrier_out
             if (LinhaRobo != 0 && 
-                (get_map_value(LinhaRobo - 4'b0001, ColunaRobo) == LIXO1 || 
-                get_map_value(LinhaRobo - 4'b0001, ColunaRobo) == LIXO2 || 
-                get_map_value(LinhaRobo - 4'b0001, ColunaRobo) == LIXO3)) begin
+                (get_lixo_type(LinhaRobo - 4'b0001, ColunaRobo) == LIXO1 || 
+                get_lixo_type(LinhaRobo - 4'b0001, ColunaRobo) == LIXO2 || 
+                get_lixo_type(LinhaRobo - 4'b0001, ColunaRobo) == LIXO3)) begin
                 barrier_out = 1;
 	            end
         end
@@ -338,17 +339,11 @@ always @(*) begin
             else 
                 left_out = 0;
 
-            // Lógica do under_out
-            if (get_map_value(LinhaRobo,ColunaRobo) == BLACK)
-                under_out = 1;
-            else
-                under_out = 0;
-
             // Lógica para setar o barrier_out
             if (ColunaRobo != 0 && 
-                (get_map_value(LinhaRobo,ColunaRobo - 4'b0001) == LIXO1 || 
-                get_map_value(LinhaRobo,ColunaRobo - 4'b0001) == LIXO2 || 
-                get_map_value(LinhaRobo,ColunaRobo - 4'b0001) == LIXO3)) begin
+                (get_lixo_type(LinhaRobo,ColunaRobo - 4'b0001) == LIXO1 || 
+                get_lixo_type(LinhaRobo,ColunaRobo - 4'b0001) == LIXO2 || 
+                get_lixo_type(LinhaRobo,ColunaRobo - 4'b0001) == LIXO3)) begin
                 barrier_out = 1;
             end
         end
@@ -365,17 +360,11 @@ always @(*) begin
             else 
                 left_out = 0;
 
-            // Lógica do under_out
-            if (get_map_value(LinhaRobo,ColunaRobo) == BLACK)
-                under_out = 1;
-            else
-                under_out = 0;
-
             // Lógica para setar o barrier_out
             if (LinhaRobo != 9 && 
-                (get_map_value(LinhaRobo + 4'b0001,ColunaRobo) == LIXO1 || 
-                get_map_value(LinhaRobo + 4'b0001,ColunaRobo) == LIXO2 || 
-                get_map_value(LinhaRobo + 4'b0001,ColunaRobo) == LIXO3)) begin
+                (get_lixo_type(LinhaRobo + 4'b0001,ColunaRobo) == LIXO1 || 
+                get_lixo_type(LinhaRobo + 4'b0001,ColunaRobo) == LIXO2 || 
+                get_lixo_type(LinhaRobo + 4'b0001,ColunaRobo) == LIXO3)) begin
                 barrier_out = 1;
             end
         end
@@ -392,17 +381,11 @@ always @(*) begin
             else 
                 left_out = 0;
 
-            // Lógica do under_out
-            if (get_map_value(LinhaRobo,ColunaRobo) == BLACK)
-                under_out = 1;
-            else
-                under_out = 0;
-
             // Lógica para setar o barrier_out
             if (ColunaRobo != 19 && 
-                (get_map_value(LinhaRobo,ColunaRobo + 4'b0001) == LIXO1 || 
-                get_map_value(LinhaRobo,ColunaRobo + 4'b0001) == LIXO2 || 
-                get_map_value(LinhaRobo,ColunaRobo + 4'b0001) == LIXO3)) begin
+                (get_lixo_type(LinhaRobo,ColunaRobo + 4'b0001) == LIXO1 || 
+                get_lixo_type(LinhaRobo,ColunaRobo + 4'b0001) == LIXO2 || 
+                get_lixo_type(LinhaRobo,ColunaRobo + 4'b0001) == LIXO3)) begin
                 barrier_out = 1;
             end
         end
@@ -413,8 +396,8 @@ always @(*) begin
     endcase
 end
 
+// Os leds representam a linha e coluna do robô
 always @(LinhaRobo, ColunaRobo) begin
-	// Os leds representam a linha e coluna do robô
 	LEDG <= {LinhaRobo, ColunaRobo};
 end
 endmodule 
