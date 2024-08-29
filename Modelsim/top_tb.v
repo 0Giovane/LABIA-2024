@@ -24,6 +24,7 @@ module Top_tb;
   wire [23:0] LinhasSprites;
   wire [8:0] LEDG;
   wire [4:0] barrier_counter;
+  wire [4:0] current_barrier;
 
   // Instantiate the Top module
   Top top_inst (
@@ -67,6 +68,7 @@ module Top_tb;
   assign clock_robo = top_inst.SYNTHESIZED_WIRE_3;
 
   assign barrier_counter = top_inst.map_inst.barrier_counter;
+  assign current_barrier = top_inst.map_inst.current_barrier;
 
   // Generate clock signal
   always begin
@@ -85,34 +87,32 @@ module Top_tb;
     #10 reset = 1;
     #10 reset = 0;
 
-    print_map();
+    // v_sync = 1;
+    // gamepad_input[3] = 1; 
 
-    v_sync = 1;
-    gamepad_input[3] = 1; 
+    // #10;
+    // v_sync = 0;
+    // gamepad_input[3] = 0; 
 
-    #10;
-    v_sync = 0;
-    gamepad_input[3] = 0; 
+    // #10;
+    // top_inst.map_inst.HabilitaNovaLeitura = 1;
+    // v_sync = 1;
+    // gamepad_input[0] = 1; 
 
-    #10;
-    top_inst.map_inst.HabilitaNovaLeitura = 1;
-    v_sync = 1;
-    gamepad_input[0] = 1; 
+    // #10;
+    // v_sync = 0;
+    // gamepad_input[0] = 0; 
 
-    #10;
-    v_sync = 0;
-    gamepad_input[0] = 0; 
+    // #10;
+    // top_inst.map_inst.HabilitaNovaLeitura = 1;
+    // v_sync = 1;
+    // gamepad_input[9] = 1; 
 
-    #10;
-    top_inst.map_inst.HabilitaNovaLeitura = 1;
-    v_sync = 1;
-    gamepad_input[9] = 1; 
+    // #10;
+    // v_sync = 0;
+    // gamepad_input[9] = 0; 
 
-    #10;
-    v_sync = 0;
-    gamepad_input[9] = 0; 
-
-    #10;
+    // #10;
 
     top_inst.map_inst.HabilitaNovaLeitura = 1;
     v_sync = 1;

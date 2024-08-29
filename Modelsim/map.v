@@ -14,7 +14,7 @@ output reg [8:0] LEDG;
 reg [59:0] FileiraMapa [0:9]; // Matriz 10x20 x 3 bits
 reg [3:0] barrier_counter; // Contador de clock para BARRIER
 integer row, col;
-reg [2:0] current_barrier;
+reg [3:0] current_barrier;
 
 reg flag_mode; // Flag para ativação do MODE no gamepad
 wire selected_clock; // Assume "manual_clock" ou "clock" dependendo da "flag_mode"
@@ -39,6 +39,14 @@ reg [3:0] LinhaCursor;
 reg [5:0] ContadorFrames;
 reg HabilitaNovaLeitura;
 
+reg [3:0] temp_LinhaLixo1;
+reg [3:0] temp_LinhaLixo2;
+reg [3:0] temp_LinhaLixo3;
+
+reg [4:0] temp_ColunaLixo1;
+reg [4:0] temp_ColunaLixo2;
+reg [4:0] temp_ColunaLixo3;
+
 // Parâmetros para o mapa
 parameter WALL = 3'h0,
             PATH = 3'h1,
@@ -60,13 +68,16 @@ reg v_sync_Primeiro_FlipFLop, v_sync_Segundo_FlipFLop;
 wire Flag;
 
 // Lógica para vsync
-always @(negedge Clock50)
-begin
+always @(negedge Clock50) begin
 	v_sync_Primeiro_FlipFLop <= v_sync;
 	v_sync_Segundo_FlipFLop <= v_sync_Primeiro_FlipFLop;
 end
 
 assign Flag = v_sync_Primeiro_FlipFLop && !v_sync_Segundo_FlipFLop;
+
+// Lógica para selecionar o clock com base no flag_mode
+assign selected_clock = (!flag_mode) ? manual_clock : Clock50;
+assign ClockRobo = selected_clock; // Saída de clock para o robô
 
 // Função para buscar valor da célula no mapa
 function [2:0] get_map_value(input [3:0] row, input [4:0] col);
@@ -77,95 +88,7 @@ begin
 end
 endfunction
 
-// Função para buscar tipo de lixo na posição
-function [3:0] get_lixo_type(input [3:0] row, input [4:0] col);
-begin
-		if (LinhaLixo1 == row && ColunaLixo1 == col) get_lixo_type = LIXO1;
-		else if (LinhaLixo2 == row && ColunaLixo2 == col) get_lixo_type = LIXO2;
-		else if (LinhaLixo3 == row && ColunaLixo3 == col) get_lixo_type = LIXO3;
-		else get_lixo_type = NULL;
-end
-endfunction
-
-// Lógica para selecionar o clock com base no flag_mode
-assign selected_clock = (!flag_mode) ? manual_clock : Clock50;
-assign ClockRobo = selected_clock; // Saída de clock para o robô
-
-// Lógica da movimentação do robô
-always @(posedge ClockRobo) begin
-	// Lógica para girar
-	if (girar) begin
-			if (OrientacaoRobo == EAST) // Retorna para o NORTH
-					OrientacaoRobo <= NORTH; 
-			else
-					OrientacaoRobo <= OrientacaoRobo + 2'b01; // Rotaciona no sentido anti-hor?rio
-	end
-
-	// Lógica para avançar
-	else if (avancar) begin
-			case (OrientacaoRobo)
-					NORTH:
-							LinhaRobo <= LinhaRobo - 4'b0001;
-					WEST:
-							ColunaRobo <= ColunaRobo - 4'b0001;
-					SOUTH:
-							LinhaRobo <= LinhaRobo + 4'b0001;
-					EAST:
-							ColunaRobo <= ColunaRobo + 4'b0001;
-			endcase
-	end
-
-	// Lógica para remover
-	else if (remover) begin
-			barrier_counter <= barrier_counter + 4'b01;
-
-			case (OrientacaoRobo)
-					NORTH: begin
-							row = LinhaRobo - 4'b0001;
-							col = ColunaRobo;
-					end
-					WEST: begin
-							row = LinhaRobo;
-							col = ColunaRobo - 4'b0001;
-					end
-					SOUTH: begin
-							row = LinhaRobo + 4'b0001;
-							col = ColunaRobo;
-					end
-					EAST: begin
-							row = LinhaRobo;
-							col = ColunaRobo + 4'b0001;
-					end
-			endcase
-
-			// Obtém o tipo de barreira baseado na posição
-			current_barrier = get_lixo_type(row, col);
-
-			// Realiza o processo de remoção baseado no tipo de barreira
-			case (current_barrier)
-					LIXO3: 
-							if (barrier_counter == 4'h8) begin // 9 clock cycles
-									LinhaLixo3 <= 4'b1111; // Fora do mapa
-									barrier_counter <= 4'h0; // Reseta o contador
-									barrier_out <= 0;
-							end
-					LIXO2: 
-							if (barrier_counter == 4'h5) begin // 6 clock cycles
-									LinhaLixo2 <= 4'b1111; // Fora do mapa
-									barrier_counter <= 4'h0; // Reseta o contador
-									barrier_out <= 0;
-							end
-					LIXO1: 
-							if (barrier_counter == 4'h2) begin // 3 clock cycles
-									LinhaLixo1 <= 4'b1111; // Fora do mapa
-									barrier_counter <= 4'h0; // Reseta o contador
-									barrier_out <= 0;
-							end
-			endcase
-	end
-end
-
-always @(posedge Clock50 or posedge Reset) begin
+always @(posedge ClockRobo or posedge Reset) begin
 	if (Reset) begin		
 		flag_mode <= 0;
 
@@ -182,12 +105,19 @@ always @(posedge Clock50 or posedge Reset) begin
 		LinhaLixo3 <= 6;		
 		LinhaRobo <= 9;		
 		LinhaCursor <= 9;
+
+		temp_LinhaLixo1 <= 6;
+		temp_LinhaLixo2 <= 6;
+		temp_LinhaLixo3 <= 6;
+
+		temp_ColunaLixo1<= 2;
+		temp_ColunaLixo2<= 3;
+		temp_ColunaLixo3<= 4;
 		
-		HabilitaNovaLeitura = 1;
+		HabilitaNovaLeitura <= 1;
 
 		OrientacaoRobo <= NORTH;
 		barrier_counter <= 2'b00;
-		barrier_out <= 0;
 
 		// Inicialização da matriz no reset
 		FileiraMapa[0] <= 60'b000_000_000_000_000_000_000_000_000_001_001_001_001_001_001_000_000_000_000_000;
@@ -202,93 +132,156 @@ always @(posedge Clock50 or posedge Reset) begin
 		FileiraMapa[9] <= 60'b111_000_000_000_000_001_001_001_001_001_001_001_000_001_001_001_001_001_000_000;
 	end
 
-	if (HabilitaNovaLeitura && Flag) begin
-		HabilitaNovaLeitura <= 0;
-		ContadorFrames <= 0;		
-		
-		// Tratamento de entradas do gamepad
-		// Entradas[11] = Saida_Mode
-		// Entradas[10] = Saida_Start
-		// Entradas[9] = Saida_Z
-		// Entradas[8] = Saida_Y
-		// Entradas[7] = Saida_X
-		// Entradas[6] = Saida_C
-		// Entradas[5] = Saida_B
-		// Entradas[4] = Saida_A
-		// Entradas[3] = Saida_Right
-		// Entradas[2] = Saida_Left
-		// Entradas[1] = Saida_Down
-		// Entradas[0] = Saida_Up 
+	else begin
 
-		if(Entradas[11]) begin
-			flag_mode <= !flag_mode;
-		end
-		
-		if (Entradas[9]) begin
-			ColunaLixo3 <= ColunaCursor;
-			LinhaLixo3 <= LinhaCursor;
-		end
+			LinhaLixo1 <= temp_LinhaLixo1;
+			LinhaLixo2 <= temp_LinhaLixo2;
+			LinhaLixo3 <= temp_LinhaLixo3;
 
-		if (Entradas[8]) begin
-			ColunaLixo2 <= ColunaCursor;
-			LinhaLixo2 <= LinhaCursor;
-		end
-		
-		if (Entradas[7]) begin
-			ColunaLixo1 <= ColunaCursor;
-			LinhaLixo1 <= LinhaCursor;
-		end
+			ColunaLixo1 <= temp_ColunaLixo1;
+			ColunaLixo2 <= temp_ColunaLixo2;
+			ColunaLixo3 <= temp_ColunaLixo3;
 
-		if (Entradas[5]) begin
-			ColunaCelulaPreta <= ColunaCursor;
-			LinhaCelulaPreta <= LinhaCursor;
-		end
+			// Lógica para girar
+			if (girar) begin
+					if (OrientacaoRobo == EAST) // Retorna para o NORTH
+							OrientacaoRobo <= NORTH; 
+					else
+							OrientacaoRobo <= OrientacaoRobo + 2'b01; // Rotaciona no sentido anti-hor?rio
+			end
 
-		if (Entradas[4]) begin
-			ColunaRobo <= ColunaCursor;
-			LinhaRobo <= LinhaCursor;
-		end
+			// Lógica para avançar
+			else if (avancar) begin
+					case (OrientacaoRobo)
+							NORTH:
+									LinhaRobo <= LinhaRobo - 4'b0001;
+							WEST:
+									ColunaRobo <= ColunaRobo - 4'b0001;
+							SOUTH:
+									LinhaRobo <= LinhaRobo + 4'b0001;
+							EAST:
+									ColunaRobo <= ColunaRobo + 4'b0001;
+					endcase
+			end
 
-		if (Entradas[0]) begin
-			if (LinhaCursor == 0)
-				LinhaCursor <= 9;
-			else
-				LinhaCursor <= LinhaCursor - 1;
-		end
-		
-		if (Entradas[1]) begin
-			if (LinhaCursor == 9)
-				LinhaCursor <= 0;
-			else
-				LinhaCursor <= LinhaCursor + 1;
-		end
-		
-		if (Entradas[2]) begin
-			if (ColunaCursor == 0)
-				ColunaCursor <= 19;
-			else
-				ColunaCursor <= ColunaCursor - 1;
-		end
-		
-		if (Entradas[3]) begin
-			if (ColunaCursor == 19)
-				ColunaCursor <= 0;
-			else
-				ColunaCursor <= ColunaCursor + 1;
-		end		
+			// Lógica para remover
+			else if (remover) begin
+					barrier_counter <= barrier_counter + 4'b01;
+
+					// Realiza o processo de remoção baseado no tipo de barreira
+					case (current_barrier)
+							LIXO3: 
+									if (barrier_counter == 4'h8) begin // 9 clock cycles
+											LinhaLixo3 <= 4'b1111; // Fora do mapa
+											barrier_counter <= 4'h0; // Reseta o contador
+									end
+							LIXO2: 
+									if (barrier_counter == 4'h5) begin // 6 clock cycles
+											LinhaLixo2 <= 4'b1111; // Fora do mapa
+											barrier_counter <= 4'h0; // Reseta o contador
+									end
+							LIXO1: 
+									if (barrier_counter == 4'h2) begin
+											LinhaLixo1 <= 4'b1111; // Fora do mapa
+											barrier_counter <= 4'h0; // Reseta o contador
+									end
+					endcase
+			end
 	end
+end
 
-	if (Flag) begin
-		if (ContadorFrames == 4)
-		begin
-			HabilitaNovaLeitura <= 1;
-			ContadorFrames <= 0;
+always @(posedge Clock50) begin
+		if (HabilitaNovaLeitura && Flag) begin
+			HabilitaNovaLeitura <= 0;
+			ContadorFrames <= 0;		
+			
+			// Tratamento de entradas do gamepad
+			// Entradas[11] = Saida_Mode
+			// Entradas[10] = Saida_Start
+			// Entradas[9] = Saida_Z
+			// Entradas[8] = Saida_Y
+			// Entradas[7] = Saida_X
+			// Entradas[6] = Saida_C
+			// Entradas[5] = Saida_B
+			// Entradas[4] = Saida_A
+			// Entradas[3] = Saida_Right
+
+			// Entradas[2] = Saida_Left
+			// Entrada2[1] = Saida_Dow2
+			// Entrad3s[0] = Saida_Up3
+			// Entradas[2] = Saida_Left
+			// Entrada2[1] = Saida_Dow2
+			// Entrad3s[0] = Saida_Up3
+
+			if(Entradas[11]) begin
+				flag_mode <= !flag_mode;
+			end
+			
+			if (Entradas[9]) begin
+				temp_ColunaLixo3 <= ColunaCursor;
+				temp_LinhaLixo3 <= LinhaCursor;
+			end
+
+			if (Entradas[8]) begin
+				temp_ColunaLixo2 <= ColunaCursor;
+				temp_LinhaLixo2 <= LinhaCursor;
+			end
+			
+			if (Entradas[7]) begin
+				temp_ColunaLixo1 <= ColunaCursor;
+				temp_LinhaLixo1 <= LinhaCursor;
+			end
+
+			if (Entradas[5]) begin
+				ColunaCelulaPreta <= ColunaCursor;
+				LinhaCelulaPreta <= LinhaCursor;
+			end
+
+			if (Entradas[4]) begin
+				ColunaRobo <= ColunaCursor;
+				LinhaRobo <= LinhaCursor;
+			end
+
+			if (Entradas[0]) begin
+				if (LinhaCursor == 0)
+					LinhaCursor <= 9;
+				else
+					LinhaCursor <= LinhaCursor - 1;
+			end
+			
+			if (Entradas[1]) begin
+				if (LinhaCursor == 9)
+					LinhaCursor <= 0;
+				else
+					LinhaCursor <= LinhaCursor + 1;
+			end
+			
+			if (Entradas[2]) begin
+				if (ColunaCursor == 0)
+					ColunaCursor <= 19;
+				else
+					ColunaCursor <= ColunaCursor - 1;
+			end
+			
+			if (Entradas[3]) begin
+				if (ColunaCursor == 19)
+					ColunaCursor <= 0;
+				else
+					ColunaCursor <= ColunaCursor + 1;
+			end		
 		end
-		else
-		begin
-			ContadorFrames <= ContadorFrames + 1;	
-		end	
-	end
+
+		if (Flag) begin
+			if (ContadorFrames == 4)
+			begin
+				HabilitaNovaLeitura <= 1;
+				ContadorFrames <= 0;
+			end
+			else
+			begin
+				ContadorFrames <= ContadorFrames + 1;	
+			end	
+		end
 end
 
 always @(negedge Clock50) begin
@@ -298,6 +291,7 @@ end
 
 // Logica combinacional das saidas
 always @(*) begin
+
 		// Lógica do under_out
 		if (LinhaCelulaPreta == LinhaRobo && ColunaCelulaPreta == ColunaRobo)
 				under_out = 1;
@@ -306,6 +300,12 @@ always @(*) begin
 
     case (OrientacaoRobo)
         NORTH: begin
+
+						if (LinhaLixo1 == LinhaRobo - 1 && ColunaLixo1 == ColunaRobo) current_barrier = LIXO1;
+						else if (LinhaLixo2 == LinhaRobo - 1 && ColunaLixo2 == ColunaRobo) current_barrier = LIXO2;
+						else if (LinhaLixo3 == LinhaRobo - 1 && ColunaLixo3 == ColunaRobo) current_barrier = LIXO3;
+						else current_barrier = NULL;
+
             // Lógica do head_out
             if (LinhaRobo == 0 || get_map_value(LinhaRobo - 4'h1, ColunaRobo) == WALL) 
                 head_out = 1;
@@ -319,14 +319,18 @@ always @(*) begin
                 left_out = 0;
 
             // Lógica para setar o barrier_out
-            if (LinhaRobo != 0 && 
-                (get_lixo_type(LinhaRobo - 4'b0001, ColunaRobo) == LIXO1 || 
-                get_lixo_type(LinhaRobo - 4'b0001, ColunaRobo) == LIXO2 || 
-                get_lixo_type(LinhaRobo - 4'b0001, ColunaRobo) == LIXO3)) begin
-                barrier_out = 1;
-	            end
+            if (LinhaRobo != 0 && current_barrier != NULL) 
+								barrier_out = 1;
+						else 
+								barrier_out = 0;
         end
         WEST: begin
+
+						if (LinhaLixo1 == LinhaRobo && ColunaLixo1 == ColunaRobo - 1) current_barrier = LIXO1;
+						else if (LinhaLixo2 == LinhaRobo && ColunaLixo2 == ColunaRobo - 1) current_barrier = LIXO2;
+						else if (LinhaLixo3 == LinhaRobo && ColunaLixo3 == ColunaRobo - 1) current_barrier = LIXO3;
+						else current_barrier = NULL;
+
             // Lógica do head_out
             if (ColunaRobo == 0 || get_map_value(LinhaRobo,ColunaRobo - 4'b0001) == WALL) 
                 head_out = 1;
@@ -340,14 +344,18 @@ always @(*) begin
                 left_out = 0;
 
             // Lógica para setar o barrier_out
-            if (ColunaRobo != 0 && 
-                (get_lixo_type(LinhaRobo,ColunaRobo - 4'b0001) == LIXO1 || 
-                get_lixo_type(LinhaRobo,ColunaRobo - 4'b0001) == LIXO2 || 
-                get_lixo_type(LinhaRobo,ColunaRobo - 4'b0001) == LIXO3)) begin
-                barrier_out = 1;
-            end
+            if (ColunaRobo != 0 && current_barrier != NULL)
+        				barrier_out = 1;
+						else 
+								barrier_out = 0;
         end
         SOUTH: begin
+
+						if (LinhaLixo1 == LinhaRobo + 1 && ColunaLixo1 == ColunaRobo) current_barrier = LIXO1;
+						else if (LinhaLixo2 == LinhaRobo + 1 && ColunaLixo2 == ColunaRobo) current_barrier = LIXO2;
+						else if (LinhaLixo3 == LinhaRobo + 1 && ColunaLixo3 == ColunaRobo) current_barrier = LIXO3;
+						else current_barrier = NULL;
+
             // Lógica do head_out
             if (LinhaRobo == 9 || get_map_value(LinhaRobo + 4'b0001,ColunaRobo) == WALL) 
                 head_out = 1;
@@ -361,14 +369,18 @@ always @(*) begin
                 left_out = 0;
 
             // Lógica para setar o barrier_out
-            if (LinhaRobo != 9 && 
-                (get_lixo_type(LinhaRobo + 4'b0001,ColunaRobo) == LIXO1 || 
-                get_lixo_type(LinhaRobo + 4'b0001,ColunaRobo) == LIXO2 || 
-                get_lixo_type(LinhaRobo + 4'b0001,ColunaRobo) == LIXO3)) begin
-                barrier_out = 1;
-            end
+            if (LinhaRobo != 9 && current_barrier != NULL)
+        				barrier_out = 1;
+						else 
+								barrier_out = 0;
         end
         EAST: begin
+
+						if (LinhaLixo1 == LinhaRobo && ColunaLixo1 == ColunaRobo + 1) current_barrier = LIXO1;
+						else if (LinhaLixo2 == LinhaRobo && ColunaLixo2 == ColunaRobo + 1) current_barrier = LIXO2;
+						else if (LinhaLixo3 == LinhaRobo && ColunaLixo3 == ColunaRobo + 1) current_barrier = LIXO3;
+						else current_barrier = NULL;
+
             // Lógica do head_out
             if (ColunaRobo == 19 || get_map_value(LinhaRobo,ColunaRobo + 4'b0001) == WALL) 
                 head_out = 1;
@@ -382,16 +394,15 @@ always @(*) begin
                 left_out = 0;
 
             // Lógica para setar o barrier_out
-            if (ColunaRobo != 19 && 
-                (get_lixo_type(LinhaRobo,ColunaRobo + 4'b0001) == LIXO1 || 
-                get_lixo_type(LinhaRobo,ColunaRobo + 4'b0001) == LIXO2 || 
-                get_lixo_type(LinhaRobo,ColunaRobo + 4'b0001) == LIXO3)) begin
-                barrier_out = 1;
-            end
+            if (ColunaRobo != 19 && current_barrier != NULL)
+        				barrier_out = 1;
+						else 
+								barrier_out = 0;
         end
         default: begin
             head_out = 0;
             left_out = 0;
+						current_barrier = NULL;
         end
     endcase
 end
