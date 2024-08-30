@@ -1,9 +1,9 @@
 module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, Linha, RGB);
 
   input Clock50, Clock25, Reset;
-  input [23:0] ColunasSprites;
+  input [29:0] ColunasSprites;
+  input [23:0] LinhasSprites;
   input [9:0] Linha, Coluna;
-  input [17:0] LinhasSprites;
   output reg [23:0] RGB;
 
   // Estados
@@ -31,6 +31,11 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
              LINHA_MAPA_3 = 267,
              LINHA_MAPA_4 = 283,
              LINHA_MAPA_5 = 299,
+             LINHA_MAPA_6 = 314,
+             LINHA_MAPA_7 = 329,
+             LINHA_MAPA_8 = 344,
+             LINHA_MAPA_9 = 360,
+             LINHA_MAPA_10 = 376,
              LINHA_INFERIOR = 314,
              COLUNA_MAPA_1 = 364,
              COLUNA_MAPA_2 = 380,
@@ -42,7 +47,17 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
              COLUNA_MAPA_8 = 476,
              COLUNA_MAPA_9 = 492,
              COLUNA_MAPA_10 = 508,
-             COLUNA_DIREITA = 539;
+             COLUNA_MAPA_11 = 524,
+             COLUNA_MAPA_12 = 540,
+             COLUNA_MAPA_13 = 556,
+             COLUNA_MAPA_14 = 572,
+             COLUNA_MAPA_15 = 588,
+             COLUNA_MAPA_16 = 604,
+             COLUNA_MAPA_17 = 620,
+             COLUNA_MAPA_18 = 636,
+             COLUNA_MAPA_19 = 652,
+             COLUNA_MAPA_20 = 668,
+             COLUNA_DIREITA = 684;
 
   parameter	CODIGO_TRANSPARENTE = 3'b000,
             CODIGO_AZUL = 3'b001,
@@ -62,18 +77,17 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
             COR_VERDE = 24'h00FF00,
             COR_VERMELHO = 24'hFF0000;
 
-
   reg [4:0] EstadoAtual, EstadoFuturo;
   reg [2:0] VetorPixels [0:31];
   reg ZonaAtiva;
 
   reg [4:0] IndicePixel, ColunaMapa, LinhaMapa, DeslocamentoLinha;
 
-
   // Background
   wire [1:60] FileiraMapa [1:10];
   reg [1:60] FileiraMapaTemp;
 
+  // Mesmo mapa do map.v, mas com outros valores
   assign FileiraMapa[1] = 60'b101_101_101_101_101_101_101_101_101_110_110_110_110_110_110_101_101_101_101_101;
   assign FileiraMapa[2] = 60'b101_101_101_101_101_101_101_101_101_110_101_101_101_101_110_101_101_101_101_101;
   assign FileiraMapa[3] = 60'b101_101_101_101_101_110_101_101_101_110_101_101_101_101_110_110_110_110_110_110;
@@ -85,26 +99,20 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
   assign FileiraMapa[9] = 60'b110_101_101_101_101_101_101_110_101_101_101_101_101_110_101_101_101_110_101_101;
   assign FileiraMapa[10] = 60'b111_101_101_101_101_110_110_110_110_110_110_110_101_110_110_110_110_110_101_101;
 
-
-  // Fusao Final
-  reg [47:0] FileiraPixelsFinal;
-  reg [47:0] FileiraPixelsTemp;
-
-
   // Posicao de Sprites
-  wire [3:0] ColunaCelulaPreta;
-  wire [3:0] ColunaLixo1;
-  wire [3:0] ColunaLixo2;
-  wire [3:0] ColunaLixo3;
-  wire [3:0] ColunaRobo;
-  wire [3:0] ColunaCursor;
+  wire [4:0] ColunaCelulaPreta;
+  wire [4:0] ColunaLixo1;
+  wire [4:0] ColunaLixo2;
+  wire [4:0] ColunaLixo3;
+  wire [4:0] ColunaRobo;
+  wire [4:0] ColunaCursor;
 
-  wire [2:0] LinhaCelulaPreta;
-  wire [2:0] LinhaLixo1;
-  wire [2:0] LinhaLixo2;
-  wire [2:0] LinhaLixo3;
-  wire [2:0] LinhaRobo;
-  wire [2:0] LinhaCursor;
+  wire [3:0] LinhaCelulaPreta;
+  wire [3:0] LinhaLixo1;
+  wire [3:0] LinhaLixo2;
+  wire [3:0] LinhaLixo3;
+  wire [3:0] LinhaRobo;
+  wire [3:0] LinhaCursor;
 
   assign ColunaCelulaPreta = ColunasSprites[23:20];
   assign ColunaLixo1 = ColunasSprites[19:16];
@@ -130,6 +138,10 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
   // Sprite 101 = Sem Cano
   // Sprite 110 = Com Cano
   // Sprite 111 = Celula Preta
+
+  // Fusao Final
+  reg [47:0] FileiraPixelsFinal;
+  reg [47:0] FileiraPixelsTemp;
 
   wire [47:0] Sprites [0:127];
 
@@ -269,7 +281,6 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
   assign Sprites[126] = 48'b101101101101101101101101101101101101101101101101;
   assign Sprites[127] = 48'b101101101101101101101101101101101101101101101101;
 
-
   always @ (*)
   begin
     if (Linha < LINHA_MAPA_1 || Linha > LINHA_INFERIOR || Coluna < (COLUNA_MAPA_1 + 16) || Coluna > COLUNA_DIREITA)
@@ -351,6 +362,26 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
         begin
           FileiraMapaTemp <= FileiraMapa[5];
         end
+        LINHA_MAPA_6 - 1:
+        begin
+          FileiraMapaTemp <= FileiraMapa[6];
+        end
+        LINHA_MAPA_7 - 1:
+        begin
+          FileiraMapaTemp <= FileiraMapa[7];
+        end
+        LINHA_MAPA_8 - 1:
+        begin
+          FileiraMapaTemp <= FileiraMapa[8];
+        end
+        LINHA_MAPA_9 - 1:
+        begin
+          FileiraMapaTemp <= FileiraMapa[9];
+        end
+        LINHA_MAPA_10 - 1:
+        begin
+          FileiraMapaTemp <= FileiraMapa[10];
+        end
       endcase
     end
 
@@ -377,6 +408,26 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
           FileiraPixelsFinal <= Sprites[FileiraMapaTemp[25:27] * 16 + DeslocamentoLinha];
         10:
           FileiraPixelsFinal <= Sprites[FileiraMapaTemp[28:30] * 16 + DeslocamentoLinha];
+        11:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[31:33] * 16 + DeslocamentoLinha];
+        12:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[34:36] * 16 + DeslocamentoLinha];
+        13:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[37:39] * 16 + DeslocamentoLinha];
+        14:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[40:42] * 16 + DeslocamentoLinha];
+        15:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[43:45] * 16 + DeslocamentoLinha];
+        16:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[46:48] * 16 + DeslocamentoLinha];
+        17:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[49:51] * 16 + DeslocamentoLinha];
+        18:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[52:54] * 16 + DeslocamentoLinha];
+        19:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[55:57] * 16 + DeslocamentoLinha];
+        20:
+          FileiraPixelsFinal <= Sprites[FileiraMapaTemp[58:60] * 16 + DeslocamentoLinha];
       endcase
     end
 
@@ -561,6 +612,56 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
             ColunaMapa = 10;
             EstadoFuturo = LER_FUNDO;
           end
+          COLUNA_MAPA_11:
+          begin
+            ColunaMapa = 11;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_12:
+          begin
+            ColunaMapa = 12;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_13:
+          begin
+            ColunaMapa = 13;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_14:
+          begin
+            ColunaMapa = 14;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_15:
+          begin
+            ColunaMapa = 15;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_16:
+          begin
+            ColunaMapa = 16;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_17:
+          begin
+            ColunaMapa = 17;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_18:
+          begin
+            ColunaMapa = 18;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_19:
+          begin
+            ColunaMapa = 19;
+            EstadoFuturo = LER_FUNDO;
+          end
+          COLUNA_MAPA_20:
+          begin
+            ColunaMapa = 20;
+            EstadoFuturo = LER_FUNDO;
+          end
           default:
           begin
             ColunaMapa = 0;
@@ -712,7 +813,7 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
 
       FILEIRA_FINAL_LADO_DIREITO:
       begin
-        if (ColunaMapa == 10)
+        if (ColunaMapa == 20)
         begin
           EstadoFuturo = LER_FILEIRA_MAPA;
         end
@@ -760,9 +861,29 @@ module Grafico (Clock50, Clock25, Reset, ColunasSprites, LinhasSprites, Coluna, 
     begin
       LinhaMapa = 4;
     end
-    else if (Linha >= LINHA_MAPA_5 && Linha <= LINHA_INFERIOR)
+    else if (Linha >= LINHA_MAPA_5 && Linha < LINHA_MAPA_6)
     begin
       LinhaMapa = 5;
+    end
+    else if (Linha >= LINHA_MAPA_6 && Linha < LINHA_MAPA_7)
+    begin
+      LinhaMapa = 6;
+    end
+    else if (Linha >= LINHA_MAPA_7 && Linha < LINHA_MAPA_8)
+    begin
+      LinhaMapa = 7;
+    end
+    else if (Linha >= LINHA_MAPA_8 && Linha < LINHA_MAPA_9)
+    begin
+      LinhaMapa = 8;
+    end
+    else if (Linha >= LINHA_MAPA_9 && Linha < LINHA_MAPA_10)
+    begin
+      LinhaMapa = 9;
+    end
+    else if (Linha >= LINHA_MAPA_10 && Linha <= LINHA_INFERIOR)
+    begin
+      LinhaMapa = 10;
     end
     else
     begin
