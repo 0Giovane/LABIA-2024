@@ -1,0 +1,233 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : -10.509
+TNS   : -403.187
+
+Type  : Slow 1200mV 85C Model Setup 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -9.311
+TNS   : -726.330
+
+Type  : Slow 1200mV 85C Model Setup 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : -4.229
+TNS   : -19.728
+
+Type  : Slow 1200mV 85C Model Setup 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : -3.860
+TNS   : -166.793
+
+Type  : Slow 1200mV 85C Model Setup 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : -3.798
+TNS   : -156.915
+
+Type  : Slow 1200mV 85C Model Setup 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 28.628
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : -3.860
+TNS   : -7.048
+
+Type  : Slow 1200mV 85C Model Hold 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : -0.328
+TNS   : -0.557
+
+Type  : Slow 1200mV 85C Model Hold 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.281
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.664
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : 1.085
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : 1.997
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : 0.382
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : 0.394
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : 0.395
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : 0.462
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 9.699
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'CLOCK_50'
+Slack : 9.891
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 19.709
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : -9.838
+TNS   : -377.020
+
+Type  : Slow 1200mV 0C Model Setup 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -8.274
+TNS   : -643.362
+
+Type  : Slow 1200mV 0C Model Setup 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : -4.172
+TNS   : -19.369
+
+Type  : Slow 1200mV 0C Model Setup 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : -3.817
+TNS   : -162.887
+
+Type  : Slow 1200mV 0C Model Setup 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : -3.765
+TNS   : -153.259
+
+Type  : Slow 1200mV 0C Model Setup 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 29.688
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : -3.274
+TNS   : -5.941
+
+Type  : Slow 1200mV 0C Model Hold 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : -0.281
+TNS   : -0.335
+
+Type  : Slow 1200mV 0C Model Hold 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.168
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.606
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : 1.208
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : 1.986
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : 0.403
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : 0.405
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : 0.449
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : 0.466
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 9.683
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : 9.887
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 19.692
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : -4.863
+TNS   : -182.670
+
+Type  : Fast 1200mV 0C Model Setup 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -4.825
+TNS   : -368.614
+
+Type  : Fast 1200mV 0C Model Setup 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : -2.018
+TNS   : -80.804
+
+Type  : Fast 1200mV 0C Model Setup 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : -1.979
+TNS   : -75.101
+
+Type  : Fast 1200mV 0C Model Setup 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : -1.763
+TNS   : -8.056
+
+Type  : Fast 1200mV 0C Model Setup 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 34.007
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : -2.015
+TNS   : -3.707
+
+Type  : Fast 1200mV 0C Model Hold 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : -0.340
+TNS   : -0.794
+
+Type  : Fast 1200mV 0C Model Hold 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.092
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.305
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : 0.446
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : 0.878
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.LER_CELULA_PRETA'
+Slack : 0.250
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO'
+Slack : 0.289
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.FILEIRA_FINAL_LADO_DIREITO'
+Slack : 0.290
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'Grafico:b2v_inst7|EstadoAtual.AGUARDAR_COLUNA'
+Slack : 0.331
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : 9.574
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'b2v_inst3|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 9.753
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'b2v_inst3|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 19.779
+TNS   : 0.000
+
+------------------------------------------------------------

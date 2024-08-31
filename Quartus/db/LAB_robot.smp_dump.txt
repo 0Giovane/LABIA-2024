@@ -1,0 +1,42 @@
+
+State Machine - |top|Grafico:b2v_inst7|EstadoAtual
+Name EstadoAtual.FILEIRA_FINAL_LADO_DIREITO EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO EstadoAtual.MERGE_CURSOR EstadoAtual.LER_CURSOR EstadoAtual.MERGE_ROBO EstadoAtual.LER_ROBO EstadoAtual.MERGE_LIXO_3 EstadoAtual.LER_LIXO_3 EstadoAtual.MERGE_LIXO_2 EstadoAtual.LER_LIXO_2 EstadoAtual.MERGE_LIXO_1 EstadoAtual.LER_LIXO_1 EstadoAtual.MERGE_CELULA_PRETA EstadoAtual.LER_CELULA_PRETA EstadoAtual.LER_FUNDO EstadoAtual.AGUARDAR_COLUNA EstadoAtual.LER_FILEIRA_MAPA EstadoAtual.IDLE 
+EstadoAtual.IDLE 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+EstadoAtual.LER_FILEIRA_MAPA 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+EstadoAtual.AGUARDAR_COLUNA 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+EstadoAtual.LER_FUNDO 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+EstadoAtual.LER_CELULA_PRETA 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+EstadoAtual.MERGE_CELULA_PRETA 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+EstadoAtual.LER_LIXO_1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+EstadoAtual.MERGE_LIXO_1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+EstadoAtual.LER_LIXO_2 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+EstadoAtual.MERGE_LIXO_2 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+EstadoAtual.LER_LIXO_3 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+EstadoAtual.MERGE_LIXO_3 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+EstadoAtual.LER_ROBO 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+EstadoAtual.MERGE_ROBO 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+EstadoAtual.LER_CURSOR 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+EstadoAtual.MERGE_CURSOR 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+EstadoAtual.FILEIRA_FINAL_LADO_ESQUERDO 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+EstadoAtual.FILEIRA_FINAL_LADO_DIREITO 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |top|Gamepad:b2v_inst4|EstadoAtual
+Name EstadoAtual.ESTADO_6 EstadoAtual.ESTADO_5 EstadoAtual.ESTADO_4 EstadoAtual.ESTADO_3 EstadoAtual.ESTADO_2 EstadoAtual.ESTADO_1 EstadoAtual.ESTADO_0 EstadoAtual.AGUARDAR_ATIVACAO EstadoAtual.ESTADO_7 
+EstadoAtual.AGUARDAR_ATIVACAO 0 0 0 0 0 0 0 0 0 
+EstadoAtual.ESTADO_0 0 0 0 0 0 0 1 1 0 
+EstadoAtual.ESTADO_1 0 0 0 0 0 1 0 1 0 
+EstadoAtual.ESTADO_2 0 0 0 0 1 0 0 1 0 
+EstadoAtual.ESTADO_3 0 0 0 1 0 0 0 1 0 
+EstadoAtual.ESTADO_4 0 0 1 0 0 0 0 1 0 
+EstadoAtual.ESTADO_5 0 1 0 0 0 0 0 1 0 
+EstadoAtual.ESTADO_6 1 0 0 0 0 0 0 1 0 
+EstadoAtual.ESTADO_7 0 0 0 0 0 0 0 1 1 
+
+State Machine - |top|Robo:b2v_inst2|Estado_Atual
+Name Estado_Atual.Standby Estado_Atual.Removendo Estado_Atual.Procurando_Muro Estado_Atual.Acompanhando_Muro Estado_Atual.Rotacionando Estado_Atual.Iniciando 
+Estado_Atual.Iniciando 0 0 0 0 0 0 
+Estado_Atual.Rotacionando 0 0 0 0 1 1 
+Estado_Atual.Acompanhando_Muro 0 0 0 1 0 1 
+Estado_Atual.Procurando_Muro 0 0 1 0 0 1 
+Estado_Atual.Removendo 0 1 0 0 0 1 
+Estado_Atual.Standby 1 0 0 0 0 1 
