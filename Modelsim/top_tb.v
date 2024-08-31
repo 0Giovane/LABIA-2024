@@ -16,6 +16,8 @@ module Top_tb;
   wire [4:0] ColunaLixo1;
   wire [3:0] LinhaCursor; 
   wire [4:0] ColunaCursor;
+  wire [3:0] LinhaCelulaPreta; 
+  wire [4:0] ColunaCelulaPreta;
   wire HabilitaNovaLeitura;
   wire [1:0] OrientacaoRobo;
   wire head, left, under, barrier, flag_mode, clock_robo, avancar, girar, remover;
@@ -55,6 +57,9 @@ module Top_tb;
   assign LinhaLixo1 = top_inst.map_inst.LinhaLixo1;
   assign ColunaLixo1 = top_inst.map_inst.ColunaLixo1;
 
+  assign LinhaCelulaPreta = top_inst.map_inst.LinhaCelulaPreta;
+  assign ColunaCelulaPreta = top_inst.map_inst.ColunaCelulaPreta;
+
   assign head = top_inst.map_inst.head_out;
   assign left = top_inst.map_inst.left_out;
   assign under = top_inst.map_inst.under_out;
@@ -75,51 +80,52 @@ module Top_tb;
     #5 clk = ~clk; // Clock period of 10 time units
   end
 
+  // always begin
+  //   #1 manual_clock = ~manual_clock;
+  // end
+
   initial begin
     gamepad_input = 12'h0;
 
     // Initialize signals
+    manual_clock = 0;
     clk = 0;
-    reset = 0;
+    reset = 1;
     v_sync = 0;
 
     // Apply reset
-    #10 reset = 1;
     #10 reset = 0;
 
     // v_sync = 1;
     // gamepad_input[3] = 1; 
-
-    // #10;
-    // v_sync = 0;
-    // gamepad_input[3] = 0; 
-
-    // #10;
-    // top_inst.map_inst.HabilitaNovaLeitura = 1;
-    // v_sync = 1;
     // gamepad_input[0] = 1; 
 
     // #10;
     // v_sync = 0;
+    // gamepad_input[3] = 0; 
     // gamepad_input[0] = 0; 
 
     // #10;
     // top_inst.map_inst.HabilitaNovaLeitura = 1;
     // v_sync = 1;
-    // gamepad_input[9] = 1; 
+
+    // #10;
+    // v_sync = 0;
+
+    // #10;
+    // top_inst.map_inst.HabilitaNovaLeitura = 1;
+    // v_sync = 1;
+    // gamepad_input[5] = 1; 
 
     // #10;
     // v_sync = 0;
     // gamepad_input[9] = 0; 
 
-    // #10;
+    #10;
 
     top_inst.map_inst.HabilitaNovaLeitura = 1;
     v_sync = 1;
-    gamepad_input[11] = 1; // Ativa o clock automático
-
-    #20
-    print_map();
+    gamepad_input[10] = 1; // Ativa o clock automático
 
     // Run the simulation for a certain time
     #1000 $finish;

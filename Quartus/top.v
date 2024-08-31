@@ -17,7 +17,7 @@
 // VERSION		"Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition"
 // CREATED		"Fri Aug 30 15:54:20 2024"
 
-module interface_top(
+module top(
 	reset,
 	CLOCK_50,
 	Pino1,

@@ -38,7 +38,7 @@
 
 
 set_global_assignment -name FAMILY "Cyclone IV E"
-set_global_assignment -name DEVICE auto
+set_global_assignment -name DEVICE EP4CE115F29C7
 set_global_assignment -name TOP_LEVEL_ENTITY top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 23.1STD.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "15:26:24  AUGUST 17, 2024"
@@ -54,9 +54,61 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_global_assignment -name VERILOG_FILE map.v
+set_global_assignment -name VERILOG_FILE ../Modelsim/map.v
+set_global_assignment -name VERILOG_FILE top.v
+set_global_assignment -name VERILOG_FILE grafico.v
+set_global_assignment -name VERILOG_FILE vga.v
 set_global_assignment -name VERILOG_FILE robo.v
 set_global_assignment -name BDF_FILE interface_top.bdf
 set_global_assignment -name QIP_FILE PLL.qip
 set_global_assignment -name VERILOG_FILE gamepad.v
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_location_assignment PIN_Y2 -to CLOCK_50
+set_location_assignment PIN_F17 -to LEDG[8]
+set_location_assignment PIN_G21 -to LEDG[7]
+set_location_assignment PIN_G22 -to LEDG[6]
+set_location_assignment PIN_G20 -to LEDG[5]
+set_location_assignment PIN_H21 -to LEDG[4]
+set_location_assignment PIN_E24 -to LEDG[3]
+set_location_assignment PIN_E25 -to LEDG[2]
+set_location_assignment PIN_E22 -to LEDG[1]
+set_location_assignment PIN_E21 -to LEDG[0]
+set_location_assignment PIN_AG26 -to Pino1
+set_location_assignment PIN_AG23 -to Pino2
+set_location_assignment PIN_AE24 -to Pino3
+set_location_assignment PIN_AE25 -to Pino4
+set_location_assignment PIN_AH26 -to Pino6
+set_location_assignment PIN_M23 -to Manual_CLOCK
+set_location_assignment PIN_AD25 -to Pino9
+set_location_assignment PIN_D12 -to VGA_B[7]
+set_location_assignment PIN_D11 -to VGA_B[6]
+set_location_assignment PIN_C12 -to VGA_B[5]
+set_location_assignment PIN_A11 -to VGA_B[4]
+set_location_assignment PIN_B11 -to VGA_B[3]
+set_location_assignment PIN_C11 -to VGA_B[2]
+set_location_assignment PIN_A10 -to VGA_B[1]
+set_location_assignment PIN_B10 -to VGA_B[0]
+set_location_assignment PIN_F11 -to VGA_BLANK_N
+set_location_assignment PIN_A12 -to VGA_CLK
+set_location_assignment PIN_C9 -to VGA_G[7]
+set_location_assignment PIN_F10 -to VGA_G[6]
+set_location_assignment PIN_B8 -to VGA_G[5]
+set_location_assignment PIN_C8 -to VGA_G[4]
+set_location_assignment PIN_H12 -to VGA_G[3]
+set_location_assignment PIN_F8 -to VGA_G[2]
+set_location_assignment PIN_G11 -to VGA_G[1]
+set_location_assignment PIN_G8 -to VGA_G[0]
+set_location_assignment PIN_G13 -to VGA_HS
+set_location_assignment PIN_C13 -to VGA_VS
+set_location_assignment PIN_H10 -to VGA_R[7]
+set_location_assignment PIN_H8 -to VGA_R[6]
+set_location_assignment PIN_J12 -to VGA_R[5]
+set_location_assignment PIN_G10 -to VGA_R[4]
+set_location_assignment PIN_F12 -to VGA_R[3]
+set_location_assignment PIN_D10 -to VGA_R[2]
+set_location_assignment PIN_E11 -to VGA_R[1]
+set_location_assignment PIN_E12 -to VGA_R[0]
+set_location_assignment PIN_C19 -to reset
+set_location_assignment PIN_AF26 -to select
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

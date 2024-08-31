@@ -15,9 +15,9 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition"
-// CREATED		"Fri Aug 30 15:54:20 2024"
+// CREATED		"Wed Aug 28 18:37:00 2024"
 
-module interface_top(
+module Top(
 	reset,
 	CLOCK_50,
 	Pino1,
@@ -31,7 +31,6 @@ module interface_top(
 	VGA_HS,
 	VGA_BLANK_N,
 	VGA_CLK,
-	select,
 	LEDG,
 	VGA_B,
 	VGA_G,
@@ -52,7 +51,6 @@ output wire	VGA_VS;
 output wire	VGA_HS;
 output wire	VGA_BLANK_N;
 output wire	VGA_CLK;
-output wire	select;
 output wire	[8:0] LEDG;
 output wire	[7:0] VGA_B;
 output wire	[7:0] VGA_G;
@@ -146,7 +144,7 @@ Gamepad	b2v_inst4(
 	.Pino6(Pino6),
 	.Pino9(Pino9),
 	.v_sync(SYNTHESIZED_WIRE_22),
-	.Select(select),
+	
 	.Saidas(SYNTHESIZED_WIRE_5));
 	defparam	b2v_inst4.AGUARDAR_ATIVACAO = 0;
 	defparam	b2v_inst4.ESTADO_0 = 1;

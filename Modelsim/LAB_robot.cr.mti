@@ -1,16 +1,9 @@
-C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/map.v {1 {vlog -work work -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/map.v
+C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/image_test.v {1 {vlog -work work -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/image_test.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module Map
+-- Compiling module ImageTest
 
 Top level modules:
-	Map
-
-} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v
-Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module Robo
-
-Top level modules:
-	Robo
+	ImageTest
 
 } {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
@@ -19,12 +12,19 @@ Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 
 Top level modules:
 	Memo
 
-} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v
+} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/robo.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module Top
+-- Compiling module Robo
 
 Top level modules:
-	Top
+	Robo
+
+} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/vga.v {1 {vlog -work work -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/vga.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module VGA
+
+Top level modules:
+	VGA
 
 } {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/memo_tb.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
@@ -32,5 +32,36 @@ Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 
 
 Top level modules:
 	Memo_tb
+
+} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Top
+
+Top level modules:
+	Top
+
+} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/gamepad.v {1 {vlog -work work -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/gamepad.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Gamepad
+
+Top level modules:
+	Gamepad
+
+} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/image_test_tb.v {2 {vlog -work work -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/image_test_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+** Warning: C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/image_test_tb.v(1): (vlog-2283) Extra semicolon in $unit (global) scope.
+** Warning: C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/image_test_tb.v(129): (vlog-2284) Empty $unit scope found.
+-- Compiling package image_test_tb_v_unit
+-- Compiling module ImageTest_tb
+
+Top level modules:
+	ImageTest_tb
+
+} {} {}} C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top_tb.v {1 {vlog -work LAB_robot -stats=none C:/Users/mathe/OneDrive/Documentos/Verilog/LABIA-2024/Modelsim/top_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Top_tb
+
+Top level modules:
+	Top_tb
 
 } {} {}}
